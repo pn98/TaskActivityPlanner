@@ -10,25 +10,26 @@
 
 @media (prefers-color-scheme: dark) {
     body.dark-theme {
-        --background-start-rgb: 0, 0, 0;
-        --background-end-rgb: 0, 0, 0;
-        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0; /* no contribution from rgb (red, green, blue) therefore this produces a colour of black */
+        --background-end-rgb: 0, 0, 0; /* black */
+        --foreground-rgb: 255, 255, 255; /* white colour produced due to a full contribution from rgb */
     }
 }
 
 body {
-    color: rgb(var(--foreground-rgb));
+    color: rgb(var(--foreground-rgb)); /* 'var()' function used to reference the value of the custom property */
     background: linear-gradient(
-        transparent,
-        to bottom,
-        rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-end-rgb))
+        transparent, /* This starts the gradient with a transparent color, at the top of the element, the background will be fully transparent, allowing whatever is beneath the element to show through */
+        rgb(var(--background-start-rgb))
+    );
 }
 
 body {
-    background-color: darkgrey;
+    background-color: #f5f5f5; /* ligh gray background colour */
     font-size: 18px;
-    color: antiquewhite;
+    color: #333; /* colour of text */
     height: 100vh;
+    padding: 20px; 
 }
+
+
