@@ -1,8 +1,7 @@
-import Image from "next/image";
 import "./globals.css";
 
 export default function Home() {
   return (
-    <main></main>
+    <main><h1>Content</h1></main>
   );
 }
