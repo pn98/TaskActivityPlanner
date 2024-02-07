@@ -5,11 +5,13 @@ import styled from "styled-components";
 
 function Sidebar() {
     return (
-        <div>Sidebar</div>
+        <SB>Sidebar</SB>
     )
 }
 
-const SB = styled.nav''
+const SB = styled.nav'
+    
+';
 
 
 export default Sidebar
