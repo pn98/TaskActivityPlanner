@@ -7,7 +7,7 @@ interface Props {
     children: React.ReactNode;
 }
 
-function GlobalStyles({ children }: Props) {
+function GlobalStylesProvider({children}: Props) {
     return <GS>{children}</GS>;
 }
 
@@ -15,4 +15,4 @@ const GS = styled.div`
     background-color: red;
 `;
 
-export default GlobalStyles;
+export default GlobalStylesProvider;
