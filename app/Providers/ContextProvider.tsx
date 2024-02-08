@@ -1,15 +1,14 @@
 "use client";
 
 import React from 'react'
-import Provider_GlobalStyles from './GlobalStylesProvider';
-import GlobalStylesProvider from './GlobalStylesProvider';
+import { GlobalProvider } from '../Context/globalProvider';
 
 interface Props {
     children: React.ReactNode;
 }
 
 function ContextProvider({ children }: Props) {
-    return <GlobalStylesProvider>{children}</GlobalStylesProvider>
+    return <GlobalProvider>{children}</GlobalProvider>
 }
 
 export default ContextProvider
