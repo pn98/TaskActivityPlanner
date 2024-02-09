@@ -6,7 +6,7 @@
     --background-start-rgb: 215, 220, 220;
     --background-end-rgb: 255, 255, 255;
     --foreground-rgb: 0, 0, 0;
-}
+} /* This defines custom CSS variables for the background colours and also the foreground color */
 
 @media (prefers-color-scheme: dark) {
     body.dark-theme {

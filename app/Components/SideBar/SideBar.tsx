@@ -12,7 +12,13 @@ function Sidebar() {
 }
 
 const SidebarStyled = styled.nav`
-    width: ${(props) => props.theme.sidebarWidth}
+    width: ${(props) => props.theme.sidebarWidth};
+    position: relative;
+    background-color: ${(props) => props.theme.colorBg2};
+    border radius: 1rem;
+    border-right: 2px solid ${(props) => props.theme.borderColor2};
+    
+
 `;
 
 export default Sidebar;
