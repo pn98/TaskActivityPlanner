@@ -15,10 +15,9 @@ const SidebarStyled = styled.nav`
     width: ${(props) => props.theme.sidebarWidth};
     position: relative;
     background-color: ${(props) => props.theme.colorBg2};
-    border radius: 1rem;
-    border-right: 2px solid ${(props) => props.theme.borderColor2};
-    
-
+    border-right: 2px solid ${(props) => props.theme.borderColor2}; /* Adjust border width */
+    padding-right: 1rem; /* Adjust padding to align content with the border */
+    margin-right: -2px; /* Adjust margin to remove space between border and content */
+    gap: 1rem;
 `;
-
 export default Sidebar;

@@ -8,11 +8,15 @@ interface Props {
 }
 
 function GlobalStylesProvider({children}: Props) {
-    return <GS>{children}</GS>;
+    return <GlobalStyles>{children}</GlobalStyles>;
 }
 
-const GS = styled.div`
-    background-color: red;
+const GlobalStyles = styled.div`
+    display: flex;
+    padding: 2.5rem;
+    gap: 1rem;
+    height: 100%;
 `;
+
 
 export default GlobalStylesProvider;
