@@ -1,8 +1,6 @@
 const themes = {
     default: {
-        colorBg: "#1F1F1F",
-        colorBg2: "#222222",
-        colorBg3: "#1A1A1A",
+        colorBg: "#131313",
         colorBg4: "#1C1C1C",
         colorButton: "#3A3A3A",
         colorDanger: "#FE6854",
@@ -68,6 +66,50 @@ const themes = {
         colorGrey2: "#B2BECD",
         colorGrey3: "#6C7983",
         colorGrey4: "#454E56"
+    },
+
+    navyWhite: {
+        colorBg: "#1F1F1F",
+        colorBg2: "#222222",
+        colorBg3: "#1A1A1A",
+        colorBg4: "#FFFFFF", // White
+        colorButton: "#FFFFFF",
+        colorDanger: "#FE6854",
+        colorTextPrimary: "#FFFFFF", // White
+        colorTextSecondary: "#B0B3B8",
+        colorFontPrimary: "#EAE7EB",
+        colorTextLight: "#F7F7F7",
+        colorBackground: "#F9F9FD",
+        colorGradient: "linear-gradient(110.42deg, #CF57A3 29.2%, #4731B6 63.51)",
+        colorGreenDark: "#27AE60",
+        colorGreenLight: "#DBE1E8",
+        activeNavLink: "rgba(249, 249, 249, 0.08)",
+        activeNavLinkHover: "rgba(249, 249, 249, 0.03)",
+        colorPrimary: "#7263F3",
+        colorPrimary2: "#705DF2",
+        colorGreyDark: "#131313",
+        colorGreyLight: "#E0E0E0",
+        colorGrey2: "#B2BECF",
+        colorGrey3: "#6C7983",
+        colorGrey4: "#4A4E56",
+        colorGrey5: "#2A2E35",
+        colorGrey6: "#12181B",
+        colorWhite: "#FFF",
+        colorPrimaryGreen: "#6FCF97",
+        borderColor: "rgba(249, 249, 249, 0.08)",
+        borderColor2: "rgba(249,249,249, 0.08)",
+        shadow7: "1px 7px 12px rgba(8, 18, 69, 0.1)",
+        sidebarWidth: "15em",
+        sidebarCollapsed: "5.4rem",
+        fontSizeH4: "19px",
+        fontSizeSmall: "14px",
+        fontSize112: "15px",
+        gridGap: "0.5rem",
+        padLRSm: "0 2rem",
+        colorIcons: "rgba(249, 249, 249, 0.35)",
+        colorIcons2: "rgba(249, 249, 249, 0.75)",
+        colorIcons3: "rgba(249, 249, 249, 0.08)",
+        colorIcons4: "rgba(0, 0, 0, 0.3)"
     }
 };
 

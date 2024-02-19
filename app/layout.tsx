@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import SideBar from "./Components/Sidebar/Sidebar";
+import Sidebar from "./Components/Sidebar/Sidebar";
 import GlobalStyles from "./Providers/GlobalStylesProvider";
 import ContextProvider from "./Providers/ContextProvider";
 
@@ -33,7 +33,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ContextProvider>
           <GlobalStyles>
-            <SideBar/>
+            <Sidebar/>
             {children}
           </GlobalStyles>
         </ContextProvider>
