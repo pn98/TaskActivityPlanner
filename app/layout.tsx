@@ -7,7 +7,6 @@ import Sidebar from "./Components/Sidebar/Sidebar";
 import GlobalStyleProvider from "./providers/GlobalStyleProvider";
 import ContextProvider from "./providers/ContextProvider";
 import NextTopLoader from "nextjs-toploader";
-import styled from "styled-components";
 
 const nunito = Nunito({
   weight: ["400", "500", "600", "700", "800"],
