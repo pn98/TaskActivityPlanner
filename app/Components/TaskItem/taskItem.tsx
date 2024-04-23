@@ -11,15 +11,20 @@ interface Props {
   date: string;
   isCompleted: boolean;
   id: string;
+  workload: string;
+  completionTime: string;
 }
 
-function TaskItem({ title, description, date, isCompleted, id }: Props) {
+function TaskItem({ title, description, date, isCompleted, id, workload, completionTime }: Props) {
   const { theme, deleteTask, updateTask } = useGlobalState();
+
   return (
     <TaskItemStyled theme={theme}>
       <h1>{title}</h1>
       <p>{description}</p>
       <p className="date">{formatDate(date)}</p>
+      <p>Predicted Workload: {workload}</p>
+      <p>Predicted Completion Time: {completionTime}</p>
       <div className="task-footer">
         {isCompleted ? (
           <button
@@ -29,7 +34,6 @@ function TaskItem({ title, description, date, isCompleted, id }: Props) {
                 id,
                 isCompleted: !isCompleted,
               };
-
               updateTask(task);
             }}
           >
@@ -43,14 +47,13 @@ function TaskItem({ title, description, date, isCompleted, id }: Props) {
                 id,
                 isCompleted: !isCompleted,
               };
-
               updateTask(task);
             }}
           >
             Incomplete
           </button>
         )}
-        <button className="edit">{}</button>
+        <button className="edit">{edit}</button>
         <button
           className="delete"
           onClick={() => {

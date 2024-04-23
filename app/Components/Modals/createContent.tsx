@@ -1,7 +1,8 @@
 "use client";
-import { useGlobalState } from "@/app/context/globalProvider";
-import axios from "axios";
+
 import React, { useState } from "react";
+import { useGlobalState } from "../../context/globalProvider";
+import axios from "axios";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import Button from "../Button/Button";
@@ -13,32 +14,47 @@ function CreateContent() {
   const [date, setDate] = useState("");
   const [completed, setCompleted] = useState(false);
   const [important, setImportant] = useState(false);
+  const [workload, setWorkload] = useState("Light");
+  const [completionTime, setCompletionTime] = useState("");
 
   const { theme, allTasks, closeModal } = useGlobalState();
-
-  const handleChange = (name: string) => (e: any) => {
+  const handleChange = (name: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const target = e.target;
+  
     switch (name) {
       case "title":
-        setTitle(e.target.value);
+        setTitle(target.value);
         break;
       case "description":
-        setDescription(e.target.value);
+        setDescription(target.value);
         break;
       case "date":
-        setDate(e.target.value);
+        setDate(target.value);
         break;
       case "completed":
-        setCompleted(e.target.checked);
+        if (target instanceof HTMLInputElement) {
+          setCompleted(target.checked);
+        }
         break;
       case "important":
-        setImportant(e.target.checked);
+        if (target instanceof HTMLInputElement) {
+          setImportant(target.checked);
+        }
+        break;
+      case "workload":
+        setWorkload(target.value);
+        break;
+      case "completionTime":
+        setCompletionTime(target.value);
         break;
       default:
         break;
     }
   };
+  
+  
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     const task = {
@@ -47,6 +63,8 @@ function CreateContent() {
       date,
       completed,
       important,
+      workload,
+      completionTime,
     };
 
     try {
@@ -122,7 +140,29 @@ function CreateContent() {
           id="important"
         />
       </div>
-
+      <div className="input-control">
+        <label htmlFor="workload">Predicted Workload</label>
+        <select
+          value={workload}
+          onChange={handleChange("workload")}
+          id="workload"
+          name="workload"
+        >
+          <option value="Light">Light</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Heavy">Heavy</option>
+        </select>
+      </div>
+      <div className="input-control">
+        <label htmlFor="completionTime">Predicted Completion Time</label>
+        <input
+          type="time"
+          value={completionTime}
+          onChange={handleChange("completionTime")}
+          id="completionTime"
+          name="completionTime"
+        />
+      </div>
       <div className="submit-btn flex justify-end">
         <Button
           type="submit"
@@ -167,7 +207,8 @@ const CreateContentStyled = styled.form`
     }
 
     input,
-    textarea {
+    textarea,
+    select {
       width: 100%;
       padding: 1rem;
 
