@@ -12,15 +12,14 @@ datasource db {
 
 
 model Task {
-  id            String   @id @default(uuid())
+  id            String     @id @default(auto()) @map("_id") // Ensure 'id' is marked as the unique identifier with @id and mapped to "_id"
   title         String
   description   String
   date          DateTime
-  isCompleted   Boolean  @default(false)
-  workload      String?  // New field for workload
-  completionTime String? // New field for completion time
+  isCompleted   Boolean
+  isImportant   Boolean
+  workload      String
+  completionTime String
   userId        String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  user          User     @relation(fields: [userId], references: [id])
 }
+
