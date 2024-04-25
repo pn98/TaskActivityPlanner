@@ -1,9 +1,9 @@
 "use client";
-import { useGlobalState } from "@/app/context/globalProvider";
-import { edit, trash } from "@/app/utils/Icons";
+import { useGlobalState } from "@/app/Context/globalProvider";
+import { edit, trash } from "@/app/Utils/Icons";
 import React from "react";
 import styled from "styled-components";
-import formatDate from "@/app/utils/formatDate";
+import formatDate from "@/app/Utils/formatDate";
 
 interface Props {
   title: string;

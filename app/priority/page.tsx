@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useGlobalState } from "../context/globalProvider";
+import { useGlobalState } from "../Context/globalProvider";
 import TaskItem from "../Components/TaskItem/TaskItem";
 
 function page() {

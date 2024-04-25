@@ -1,4 +1,4 @@
-import prisma from "@/app/utils/connect";
+import prisma from "@/app/Utils/connect";
 // Importing the Prisma client instance from a custom module "@/app/utils/connect".
 
 import { auth } from "@clerk/nextjs";

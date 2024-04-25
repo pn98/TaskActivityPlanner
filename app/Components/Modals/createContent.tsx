@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useGlobalState } from "../../context/globalProvider";
+import { useGlobalState } from "../../Context/globalProvider";
 import axios from "axios";
 import toast from "react-hot-toast";
 import styled from "styled-components";
