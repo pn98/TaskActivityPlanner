@@ -12,14 +12,17 @@ datasource db {
 
 
 model Task {
-  id            String     @id @default(auto()) @map("_id") // Ensure 'id' is marked as the unique identifier with @id and mapped to "_id"
-  title         String
-  description   String
-  date          DateTime
-  isCompleted   Boolean
-  isImportant   Boolean
-  workload      String
-  completionTime String
-  userId        String
+  id             String     @id @default(cuid()) @map("_id")
+
+  title          String
+  description    String
+  date           String
+  isCompleted    Boolean
+  priority       String?
+  mood           String?
+  workload       String?
+  completionTime String?
+
+  userId         String
 }
 
