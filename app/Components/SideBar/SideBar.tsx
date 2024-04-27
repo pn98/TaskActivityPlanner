@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import styled from "styled-components";
-import { useGlobalState } from "@/app/Context/globalProvider";
+import { useGlobalState } from "@/app/context/globalProvider";
 import Image from "next/image";
 
-import menu from "@/app/utils/SidebarContent";
+import menu from "@/app/utils/menu";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "../Button/Button";

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { GlobalProvider } from "../Context/globalProvider";
+import { GlobalProvider } from "../context/globalProvider";
 import { Toaster } from "react-hot-toast";
 
 interface Props {

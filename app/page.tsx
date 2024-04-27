@@ -1,6 +1,6 @@
 "use client";
 import Tasks from "./Components/Tasks/Tasks";
-import { useGlobalState } from "./Context/globalProvider";
+import { useGlobalState } from "./context/globalProvider";
 
 export default function Home() {
   return <Tasks />;
