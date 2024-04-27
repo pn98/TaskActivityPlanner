@@ -191,7 +191,7 @@ function CreateContent() {
       </div>
 
       <div className="input-control">
-        <label htmlFor="timeToComplete">Time to Complete (Minutes)</label>
+        <label htmlFor="timeToComplete">Predicted Time Completion (Minutes)</label>
         <input
           style={{
             color: "white",

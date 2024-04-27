@@ -96,7 +96,7 @@ function CreateContent() {
           value={title}
           name="title"
           onChange={handleChange("title")}
-          placeholder="e.g, Watch a video from Fireship."
+          placeholder="e.g, Go for a run"
         />
       </div>
       <div className="input-control">
@@ -107,7 +107,7 @@ function CreateContent() {
           name="description"
           id="description"
           rows={4}
-          placeholder="e.g, Watch a video about Next.js Auth"
+          placeholder="e.g, 5km in under 25 mins"
         ></textarea>
       </div>
       <div className="input-control">
