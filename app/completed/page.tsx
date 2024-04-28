@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useGlobalState } from "../context/globalProvider";
 import TaskItem from "../Components/TaskItem/TaskItem";
 
@@ -15,9 +15,42 @@ function page() {
         gap: "1rem",
       }}
     >
-      {completedTasks.map((task: any) => (
-        <TaskItem key={task._id} {...task} />
-      ))}
+      <table>
+        <thead>
+          <tr>
+            <th style={{
+              textAlign: "left",
+            }}>Title</th>
+            <th style={{
+              textAlign: "left",
+            }}>Description</th>
+            <th style={{
+              textAlign: "left",
+            }}>Date</th>
+            <th style={{
+              textAlign: "left",
+            }}>Workload</th>
+            <th style={{
+              textAlign: "left",
+            }}>Priority</th>
+            <th style={{
+              textAlign: "left",
+            }}>Completion Time</th>
+            <th style={{
+              textAlign: "left",
+            }}>Mood</th>
+            <th style={{
+              textAlign: "left",
+            }}>Status</th>
+            <th style={{
+              textAlign: "left",
+            }}>Actions</th>
+          </tr>
+        </thead>
+        {completedTasks.map((task: any) => (
+          <TaskItem key={task._id} {...task} />
+        ))}
+      </table>
     </div>
   );
 }

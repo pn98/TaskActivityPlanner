@@ -1,9 +1,9 @@
-"use client";
-import { useGlobalState } from "@/app/context/globalProvider";
-import { edit, trash } from "@/app/utils/Icons";
 import React from "react";
 import styled from "styled-components";
+import { edit, trash } from "@/app/utils/Icons";
 import formatDate from "@/app/utils/formatDate";
+import { useGlobalState } from "@/app/context/globalProvider";
+import { useState } from "react";
 
 interface Props {
   title: string;
@@ -13,112 +13,162 @@ interface Props {
   id: string;
   workload: string;
   completionTime: string;
+  mood: string;
+  priority: string;
 }
 
-function TaskItem({ title, description, date, isCompleted, id, workload, completionTime }: Props) {
+function TaskItem({
+  title,
+  description,
+  mood,
+  date,
+  isCompleted,
+  id,
+  workload,
+  completionTime,
+  priority,
+}: Props) {
   const { theme, deleteTask, updateTask } = useGlobalState();
+  const [edit, setEdit] = useState(false);
+  const [newCompletionTime, setCompletionTime] = useState(completionTime);
+  const [newMood, setMood] = useState(mood);
+  const [newWorkload, setWorkload] = useState(workload);
 
   return (
-    <TaskItemStyled theme={theme}>
-      <h1>{title}</h1>
-      <p>{description}</p>
-      <p className="date">{formatDate(date)}</p>
-      <p>Predicted Workload: {workload}</p>
-      <p>Predicted Completion Time: {completionTime}</p>
-      <div className="task-footer">
-        {isCompleted ? (
-          <button
-            className="completed"
-            onClick={() => {
-              const task = {
-                id,
-                isCompleted: !isCompleted,
-              };
-              updateTask(task);
-            }}
-          >
-            Completed
-          </button>
+    <TaskItemRow theme={theme}>
+      <td>{title}</td>
+      <td>{description}</td>
+      <td>{formatDate(date)}</td>
+      <td>
+        {edit ? (
+          <>
+            <select
+              style={{
+                backgroundColor: theme.colorGreyDark,
+              }}
+              value={newWorkload}
+              onChange={(e: any) => setWorkload(e.target.value)}
+              name="workload"
+              id="workload"
+            >
+              <option value="">Select Workload</option>
+              {["Low", "Medium", "High"].map((workload: any) => (
+                <option key={workload} value={workload}>
+                  {workload}
+                </option>
+              ))}
+            </select>
+          </>
         ) : (
-          <button
-            className="incomplete"
-            onClick={() => {
-              const task = {
+          workload
+        )}
+      </td>
+      <td>{priority}</td>
+      <td>
+        {edit ? (
+          <>
+            <input
+              style={{
+                backgroundColor: "gray",
+              }}
+              type="time"
+              value={newCompletionTime}
+              onChange={(e) => setCompletionTime(e.target.value)}
+            />
+          </>
+        ) : (
+          completionTime
+        )}
+      </td>
+      <td>
+        {edit ? (
+          <>
+            <select
+              style={{
+                backgroundColor: theme.colorGreyDark,
+              }}
+              value={newMood}
+              onChange={(e: any) => setMood(e.target.value)}
+              name="mood"
+              id="mood"
+            >
+              <option value="">Select Mood</option>
+              {["Happy", "Sad", "Neutral"].map((mood: any) => (
+                <option key={mood} value={mood}>
+                  {mood}
+                </option>
+              ))}
+            </select>
+          </>
+        ) : (
+          mood
+        )}
+      </td>
+      <td>
+        <button
+          onClick={() => {
+            if (edit) {
+              updateTask({
+                id,
+                completionTime: newCompletionTime,
+                mood: newMood,
+                workload: newWorkload,
+                isCompleted: !isCompleted,
+              });
+            } else if (isCompleted) {
+              updateTask({
                 id,
                 isCompleted: !isCompleted,
-              };
-              updateTask(task);
-            }}
-          >
-            Incomplete
-          </button>
-        )}
-        <button className="edit">{edit}</button>
-        <button
-          className="delete"
-          onClick={() => {
-            deleteTask(id);
+              });
+            } else {
+              setEdit(true);
+            }
+          }}
+          style={{
+            backgroundColor: isCompleted
+              ? theme.colorGreenDark
+              : theme.colorDanger,
           }}
         >
+          {edit ? "Save" : isCompleted ? "Completed" : "Not Completed"}
+        </button>
+      </td>
+      <td>
+        <button className="edit">{edit}</button>
+        <button className="delete" onClick={() => deleteTask(id)}>
           {trash}
         </button>
-      </div>
-    </TaskItemStyled>
+      </td>
+    </TaskItemRow>
   );
 }
 
-const TaskItemStyled = styled.div`
-  padding: 1.2rem 1rem;
-  border-radius: 1rem;
+const TaskItemRow = styled.tr`
   background-color: ${(props) => props.theme.borderColor2};
-  box-shadow: ${(props) => props.theme.shadow7};
-  border: 2px solid ${(props) => props.theme.borderColor2};
+  border-bottom: 1px solid ${(props) => props.theme.borderColor1};
 
-  height: 16rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  td {
+    padding: 0.8rem;
+    border: none;
 
-  .date {
-    margin-top: auto;
+    &:not(:last-child) {
+      border-right: 1px solid ${(props) => props.theme.borderColor1};
+    }
   }
 
-  > h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
+  button {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 0.9rem;
   }
 
-  .task-footer {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-
-    button {
-      border: none;
-      outline: none;
-      cursor: pointer;
-
-      i {
-        font-size: 1.4rem;
-        color: ${(props) => props.theme.colorGrey2};
-      }
-    }
-
-    .edit {
-      margin-left: auto;
-    }
-
-    .completed,
-    .incomplete {
-      display: inline-block;
-      padding: 0.4rem 1rem;
-      background: ${(props) => props.theme.colorDanger};
-      border-radius: 30px;
-    }
-
-    .completed {
-      background: ${(props) => props.theme.colorGreenDark} !important;
-    }
+  .edit,
+  .delete {
+    background: none;
+    color: ${(props) => props.theme.colorGrey2};
   }
 `;
 
