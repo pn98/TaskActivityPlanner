@@ -44,7 +44,7 @@ export async function POST(req: Request) {
         date,
         isCompleted: completed,
         completionTime: timeToComplete,
-        priority, // Add the 'priority' property here
+        priority,
         mood,
         workload,
         userId,
