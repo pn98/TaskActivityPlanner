@@ -19,6 +19,8 @@ export async function POST(req: Request) {
       mood,
       workload,
       timeToComplete,
+      share,
+      message,
     } = await req.json();
 
     if (!title || !description || !date) {
@@ -46,6 +48,8 @@ export async function POST(req: Request) {
         mood,
         workload,
         userId,
+        share,
+        message,
       },
     });
 
