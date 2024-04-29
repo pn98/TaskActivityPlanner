@@ -29,7 +29,7 @@ export default function page() {
         endDate={new Date("2024-12-31")}
         values={heatmapValues}
         showWeekdayLabels={true}
-        classForValue={(value: { count: any; }) => {
+        classForValue={(value) => {
           if (!value) {
             return "color-empty";
           }
