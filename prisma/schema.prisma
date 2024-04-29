@@ -24,5 +24,8 @@ model Task {
   completionTime String?
 
   userId         String
+  
+  share          Boolean?
+  message        String?
 }
 
