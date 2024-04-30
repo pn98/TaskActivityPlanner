@@ -39,12 +39,6 @@ const menu = [
     icon: user,
     link: "/share",
   },
-  {
-    id: 6,
-    title: "Settings",
-    icon: gear,
-    link: "/settings",
-  }
 ];
 
 export default menu;
