@@ -8,9 +8,11 @@ import {
 export default function CheckoutForm({
   clientSecret,
   onError,
+  onPaymentSuccess,
 }: {
   clientSecret: string;
   onError?: () => void;
+  onPaymentSuccess?: () => void;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -34,6 +36,8 @@ export default function CheckoutForm({
         confirmParams: {
           return_url: "http://localhost:3000/",
         },
+
+        redirect: "if_required",
       });
 
       console.log(result);
@@ -43,9 +47,11 @@ export default function CheckoutForm({
         onError && onError();
       } else {
         console.log("Payment processed successfully!");
+        onPaymentSuccess && onPaymentSuccess();
       }
     } catch (error) {
       console.error(error);
+      // Optionally, handle/display errors in UI
     } finally {
       setIsLoading(false);
     }

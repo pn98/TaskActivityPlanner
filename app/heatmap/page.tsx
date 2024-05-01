@@ -17,13 +17,33 @@ export default function page() {
     return acc;
   }, {});
 
+  // Convert to array for the heatmap
   const heatmapValues = Object.keys(taskCountsByDate).map((date) => ({
     date,
     count: taskCountsByDate[date],
   }));
 
   return (
-    <div>
+    <div className="h-full w-full flex flex-col justify-center gap-4">
+      <div>
+        <h1 className="text-2xl font-bold">Task Heatmap</h1>
+        <p className="text-gray-500">Number of tasks completed each day</p>
+
+        <ul>
+          <li>
+            <span className="text-green-600">◼</span> 0 tasks
+          </li>
+          <li>
+            <span className="text-yellow-500">◼</span> 1-2 tasks
+          </li>
+          <li>
+            <span className="text-orange-500">◼</span> 3-4 tasks
+          </li>
+          <li>
+            <span className="text-red-500">◼</span> 5+ tasks
+          </li>
+        </ul>
+      </div>
       <CalendarHeatmap
         startDate={new Date("2024-01-01")}
         endDate={new Date("2024-12-31")}

@@ -56,7 +56,7 @@ export default function RootLayout({
                   overflowY: "auto",
                 }}
               >
-                <div className="w-full">{children}</div>
+                <div className="w-full h-full">{children}</div>
               </div>
               {userId && <Sidebar />}
             </GlobalStyleProvider>

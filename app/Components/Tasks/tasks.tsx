@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../Button/Button";
 import axios from "axios";
@@ -18,12 +18,29 @@ function CreateContent() {
   const [mood, setMood] = useState("");
   const [workload, setWorkload] = useState("");
   const [timeToComplete, setTimeToComplete] = useState(0);
+  const [moodAfter, setMoodAfter] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [dueTime, setDueTime] = useState("00:00:00");
 
-  const { theme, allTasks } = useGlobalState();
+  const { theme, allTasks, tasks } = useGlobalState();
 
   const priorities = ["Low", "Medium", "High"];
-  const moods = ["Happy", "Sad", "Neutral"];
+  const moods = ["Happy", "Anxious", "Focued", "Bored", "Excited"];
   const workloads = ["Light", "Moderate", "Heavy"];
+
+  useEffect(() => {
+    const tasksAtDate = tasks.filter((task: any) => task.date === date);
+
+    if (tasksAtDate.length >= 5) {
+      setBusy(true);
+    } else {
+      setBusy(false);
+    }
+  }, [allTasks, date]);
+
+  useEffect(() => {
+    console.log(completed);
+  }, [completed]);
 
   const handleChange = (name: string) => (e: any) => {
     switch (name) {
@@ -37,7 +54,7 @@ function CreateContent() {
         setDate(e.target.value);
         break;
       case "completed":
-        setCompleted(e.target.checked);
+        setCompleted(!completed);
         break;
       case "important":
         setImportant(e.target.checked);
@@ -53,6 +70,12 @@ function CreateContent() {
         break;
       case "timeToComplete":
         setTimeToComplete(e.target.value);
+        break;
+      case "moodAfter":
+        setMoodAfter(e.target.value);
+        break;
+      case "dueTime":
+        setDueTime(e.target.value);
         break;
       default:
         break;
@@ -72,6 +95,8 @@ function CreateContent() {
       mood,
       workload,
       timeToComplete,
+      dueTime,
+      moodAfter
     };
 
     try {
@@ -97,6 +122,10 @@ function CreateContent() {
       <div className="input-control">
         <label htmlFor="title">Task Name</label>
         <input
+          style={{
+            color: "white",
+            backgroundColor: theme.colorGreyDark,
+          }}
           type="text"
           id="title"
           value={title}
@@ -108,6 +137,10 @@ function CreateContent() {
       <div className="input-control">
         <label htmlFor="description">Description</label>
         <textarea
+          style={{
+            color: "white",
+            backgroundColor: theme.colorGreyDark,
+          }}
           value={description}
           onChange={handleChange("description")}
           name="description"
@@ -170,6 +203,28 @@ function CreateContent() {
         </select>
       </div>
 
+      {completed === true && (
+        <div className="input-control">
+          <label htmlFor="mood">Mood After</label>
+          <select
+            style={{
+              backgroundColor: theme.colorGreyDark,
+            }}
+            value={moodAfter}
+            onChange={handleChange("moodAfter")}
+            name="mood"
+            id="mood"
+          >
+            <option value="">Select Mood</option>
+            {moods.map((mood) => (
+              <option key={mood} value={mood}>
+                {mood}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       <div className="input-control">
         <label htmlFor="workload">Workload</label>
         <select
@@ -199,9 +254,22 @@ function CreateContent() {
           }}
           value={timeToComplete}
           onChange={handleChange("timeToComplete")}
-          type="time"
+          type="number"
           name="timeToComplete"
-          id="timeToComplete"
+        />
+      </div>
+
+      <div className="input-control">
+        <label htmlFor="dueTime">Due Time</label>
+        <input
+          style={{
+            color: "white",
+            backgroundColor: theme.colorGreyDark,
+          }}
+          value={dueTime}
+          onChange={handleChange("dueTime")}
+          type="time"
+          name="dueTime"
           placeholder="e.g, 30"
         />
       </div>
@@ -227,10 +295,27 @@ function CreateContent() {
         />
       </div> */}
 
-      <div className="submit-btn flex justify-end">
+      {busy && (
+        <div className="input-control">
+          <p>
+            You have too many tasks for this date. Please select another date.
+          </p>
+        </div>
+      )}
+
+      <div className="submit-btn gap-4 flex justify-end">
+        {busy && (
+          <Button
+            name="Go back"
+            padding={"0.8rem 2rem"}
+            borderRad={"0.8rem"}
+            background={"rgb(0, 163, 255)"}
+          />
+        )}
+
         <Button
           type="submit"
-          name="Create Task"
+          name={busy ? "Add anyway" : "Create Task"}
           icon={add}
           padding={"0.8rem 2rem"}
           borderRad={"0.8rem"}

@@ -10,7 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Task {
   id             String     @id @default(cuid()) @map("_id")
 
@@ -20,8 +19,10 @@ model Task {
   isCompleted    Boolean
   priority       String?
   mood           String?
+  moodAfter      String?
   workload       String?
   completionTime String?
+  dueTime        String?
 
   userId         String
   
@@ -29,3 +30,8 @@ model Task {
   message        String?
 }
 
+model Payment {
+  id             String     @id @default(cuid()) @map("_id")
+  userId         String
+  paymentDone    Boolean
+}

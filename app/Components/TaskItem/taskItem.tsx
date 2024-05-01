@@ -18,30 +18,30 @@ interface Props {
   completionTime: string;
   mood: string;
   priority: string;
+  moodAfter: string;
 }
 
-function TaskItem(
-  {
-    title,
-    description,
-    mood,
-    date,
-    isCompleted,
-    id,
-    workload,
-    completionTime,
-    priority,
-  }: Props,
-) {
+function TaskItem({
+  title,
+  description,
+  mood,
+  date,
+  isCompleted,
+  id,
+  workload,
+  completionTime,
+  priority,
+  moodAfter,
+}: Props) {
   const params = usePathname().split("/");
   const share = params[1] === "share";
   const { theme, deleteTask, updateTask, allTasks } = useGlobalState();
   const [edit, setEdit] = useState(false);
   const [newCompletionTime, setCompletionTime] = useState(completionTime);
-  const [newMood, setMood] = useState(mood);
   const [newWorkload, setWorkload] = useState(workload);
   const [userId, setUserId] = useState("");
   const [message, setMessage] = useState("");
+  const [newMoodAfter, setMoodAfter] = useState(moodAfter);
 
   const shareTask = async () => {
     const task = {
@@ -56,6 +56,7 @@ function TaskItem(
       userId: userId,
       share: true,
       message,
+      moodAfter,
     };
 
     try {
@@ -113,7 +114,8 @@ function TaskItem(
                 style={{
                   backgroundColor: "gray",
                 }}
-                type="time"
+                type="number"
+                className="w-16"
                 value={newCompletionTime}
                 onChange={(e) => setCompletionTime(e.target.value)}
               />
@@ -122,6 +124,7 @@ function TaskItem(
             completionTime
           )}
         </td>
+        <td>{mood}</td>
         <td>
           {edit ? (
             <>
@@ -129,21 +132,23 @@ function TaskItem(
                 style={{
                   backgroundColor: theme.colorGreyDark,
                 }}
-                value={newMood}
-                onChange={(e: any) => setMood(e.target.value)}
+                value={newMoodAfter}
+                onChange={(e: any) => setMoodAfter(e.target.value)}
                 name="mood"
                 id="mood"
               >
                 <option value="">Select Mood</option>
-                {["Happy", "Sad", "Neutral"].map((mood: any) => (
-                  <option key={mood} value={mood}>
-                    {mood}
-                  </option>
-                ))}
+                {["Happy", "Anxious", "Focued", "Bored", "Excited"].map(
+                  (mood: any) => (
+                    <option key={mood} value={mood}>
+                      {mood}
+                    </option>
+                  )
+                )}
               </select>
             </>
           ) : (
-            mood
+            moodAfter ? moodAfter : "N/A"
           )}
         </td>
         <td>
@@ -153,7 +158,7 @@ function TaskItem(
                 updateTask({
                   id,
                   completionTime: newCompletionTime,
-                  mood: newMood,
+                  moodAfter: newMoodAfter,
                   workload: newWorkload,
                   isCompleted: !isCompleted,
                 });

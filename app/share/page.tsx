@@ -3,21 +3,53 @@
 import React from "react";
 import { useGlobalState } from "../context/globalProvider";
 import TaskItem from "../Components/TaskItem/TaskItem";
+import { getPayment, createPayment } from "../actions/payment";
+import { useEffect } from "react";
+import Payment from "../Components/payment";
 
 function Page() {
   const { incompleteTasks, tasks } = useGlobalState();
+  const [payment, setPayment] = React.useState<any>(null);
 
-  React.useEffect(() => {
-    // Check if there are any tasks with isCompleted === false
+  useEffect(() => {
     const incompleteTaskExists = tasks.some(
       (task: { isCompleted: any }) => !task.isCompleted
     );
 
-    // If there are incomplete tasks, redirect to the incompleteTasks section
     if (incompleteTaskExists) {
       window.location.href = "#incomplete-tasks";
     }
   }, [tasks]);
+
+  useEffect(() => {
+    const fetchPayment = async () => {
+      const { payment, error } = await getPayment();
+
+      if (error) {
+        console.log("Error getting payment: ", error);
+      } else {
+        console.log("Payment: ", payment);
+        setPayment(payment);
+      }
+    };
+
+    fetchPayment();
+  }, []);
+
+  const handlePayment = async () => {
+    const { payment, error } = await createPayment();
+
+    if (error) {
+      console.log("Error creating payment: ", error);
+    } else {
+      console.log("Payment created: ", payment);
+      setPayment(payment);
+    }
+  };
+
+  if (!payment) {
+    return <Payment onPaymentSuccess={handlePayment} />;
+  }
 
   return (
     <div

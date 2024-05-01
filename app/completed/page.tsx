@@ -41,6 +41,9 @@ function page() {
             }}>Mood</th>
             <th style={{
               textAlign: "left",
+            }}>Mood After</th>
+            <th style={{
+              textAlign: "left",
             }}>Status</th>
             <th style={{
               textAlign: "left",

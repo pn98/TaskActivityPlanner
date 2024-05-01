@@ -1,5 +1,4 @@
-
-import { home, todo, edit, calendar, user, gear, join } from "./Icons";
+import { home, todo, edit, calendar, user, gear } from "./Icons";
 
 const menu = [
   {
@@ -26,12 +25,6 @@ const menu = [
     title: "Heatmap",
     icon: calendar,
     link: "/heatmap",
-  },
-  {
-    id: 6,
-    title: "Payment",
-    icon: join,
-    link: "/payment",
   },
   {
     id: 5,
