@@ -21,8 +21,11 @@ model Task {
   mood           String?
   moodAfter      String?
   workload       String?
+  actualWorkload String?
   completionTime String?
-  dueTime        String?
+  startTime      String?
+  duration       String?
+  actualDuration String?
 
   userId         String
   

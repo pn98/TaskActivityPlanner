@@ -8,6 +8,12 @@ const menu = [
     link: "/",
   },
   {
+    id: 6,
+    title: "This Week",
+    icon: calendar,
+    link: "/this-week",
+  },
+  {
     id: 2,
     title: "Complete",
     icon: todo,
