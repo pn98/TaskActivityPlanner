@@ -22,7 +22,6 @@ model Task {
   moodAfter      String?
   workload       String?
   actualWorkload String?
-  completionTime String?
   startTime      String?
   duration       String?
   actualDuration String?
