@@ -1,7 +1,7 @@
 const themes = [
   {
     name: "default",
-    colorBg: "#252525",
+    colorBg: "#4A8BDF",
     colorBg2: "#212121",
     colorBg3: "#181818",
     colorBg4: "#1A1A1A",
@@ -17,7 +17,7 @@ const themes = [
     colorGreenLight: "#dbe1e8",
     activeNavLink: "rgba(249,249,249, 0.08)",
     activeNavLinkHover: "rgba(249,249,249, 0.03)",
-    colorPrimary: "#7263F3",
+    colorPrimary: "#4A8BDF",
     colorPrimary2: "#705DF2",
     colorGreyDark: "#131313",
     colorGrey0: "#f8f8f8",

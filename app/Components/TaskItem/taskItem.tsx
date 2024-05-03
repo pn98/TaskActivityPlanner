@@ -146,7 +146,7 @@ function TaskItem({
             <>
               <input
                 style={{
-                  backgroundColor: "#white",
+                  backgroundColor: "#4A8BDF",
                 }}
                 type="number"
                 className="w-16"
