@@ -6,17 +6,17 @@ import TaskItem from "../Components/TaskItem/TaskItem";
 
 function Page() {
   const { incompleteTasks, tasks } = useGlobalState();
+  const [filteredTasks, setFilteredTasks] = React.useState(tasks);
 
   React.useEffect(() => {
-    // Check if there are any tasks with isCompleted === false
-    const incompleteTaskExists = tasks.some(
-      (task: { isCompleted: any }) => !task.isCompleted
-    );
+    // Sorting by priority High, Medium, Low
+    const sortedTasks = tasks.sort((a: any, b: any) => {
+      if (a.priority === "High" && b.priority !== "High") return -1;
+      if (a.priority === "Medium" && b.priority === "Low") return -1;
+      return 1;
+    });
 
-    // If there are incomplete tasks, redirect to the incompleteTasks section
-    if (incompleteTaskExists) {
-      window.location.href = "#incomplete-tasks";
-    }
+    setFilteredTasks(sortedTasks);
   }, [tasks]);
 
   return (
@@ -70,7 +70,7 @@ function Page() {
                 textAlign: "left",
               }}
             >
-              Completion Time
+              Duration
             </th>
             <th
               style={{
@@ -84,7 +84,21 @@ function Page() {
                 textAlign: "left",
               }}
             >
+              Actual Workload
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
               Mood After
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Actual Duration
             </th>
             <th
               style={{
