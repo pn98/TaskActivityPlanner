@@ -7,7 +7,7 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 18px; 
     color: #fff; /* Set text color to white*/
-    background: #161b23; /* Set background color */
+    background: #ffffff; /* Set background color */
     height: 100vh;
     padding: 20px;
     transition: background-color 0.3s ease; /* Smooth transition for background color change */

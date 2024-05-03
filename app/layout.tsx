@@ -46,10 +46,10 @@ export default function RootLayout({
           <ContextProvider>
             <GlobalStyleProvider>
               <div
+                className="bg-[#E85A45] text-black"
                 style={{
                   width: "75vw",
                   height: "100%",
-                  backgroundColor: "#0d1117",
                   border: "2px solid white",
                   borderRadius: "1rem",
                   padding: "2rem",

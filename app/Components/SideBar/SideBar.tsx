@@ -60,6 +60,7 @@ function Sidebar() {
 
       <div className="sign-out relative m-6">
         <Button
+          color="black"
           name={"Sign Out"}
           type={"submit"}
           padding={"0.4rem 0.8rem"}
@@ -153,13 +154,13 @@ const SidebarStyled = styled.nav`
   top: 10;
   right: 35px;
   width: 260px;
-  background-color: #0d1117;
-  border: 2px solid white;
+  background-color: white;
+  border: 2px solid black;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  color: white;
+  color: black;
 
   .nav-item {
     position: relative;
@@ -194,7 +195,8 @@ const SidebarStyled = styled.nav`
   }
 
   .active {
-    background-color: #21262d;
+    background-color: black;
+    color: white;
   }
 `;
 
