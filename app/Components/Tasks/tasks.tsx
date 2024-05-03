@@ -17,10 +17,11 @@ function CreateContent() {
   const [priority, setPriority] = useState("");
   const [mood, setMood] = useState("");
   const [workload, setWorkload] = useState("");
-  const [timeToComplete, setTimeToComplete] = useState(0);
+  const [timeToComplete, setTimeToComplete] = useState("");
   const [moodAfter, setMoodAfter] = useState("");
   const [busy, setBusy] = useState(false);
-  const [dueTime, setDueTime] = useState("00:00:00");
+  const [startTime, setstartTime] = useState("00:00:00");
+  const [duration, setDuration] = useState("");
 
   const { theme, allTasks, tasks } = useGlobalState();
 
@@ -74,9 +75,11 @@ function CreateContent() {
       case "moodAfter":
         setMoodAfter(e.target.value);
         break;
-      case "dueTime":
-        setDueTime(e.target.value);
+      case "startTime":
+        setstartTime(e.target.value);
         break;
+      case "duration":
+        setDuration(e.target.value);
       default:
         break;
     }
@@ -95,8 +98,8 @@ function CreateContent() {
       mood,
       workload,
       timeToComplete,
-      dueTime,
-      moodAfter
+      startTime,
+      moodAfter,
     };
 
     try {
@@ -123,8 +126,8 @@ function CreateContent() {
         <label htmlFor="title">Task Name</label>
         <input
           style={{
-            color: "white",
-            backgroundColor: theme.colorGreyDark,
+            color: "#E85a4f",
+            backgroundColor: "#D8c3a5",
           }}
           type="text"
           id="title"
@@ -138,8 +141,8 @@ function CreateContent() {
         <label htmlFor="description">Description</label>
         <textarea
           style={{
-            color: "white",
-            backgroundColor: theme.colorGreyDark,
+            color: "#E85a4f",
+            backgroundColor: "#D8c3a5",
           }}
           value={description}
           onChange={handleChange("description")}
@@ -153,8 +156,8 @@ function CreateContent() {
         <label htmlFor="date">Date Due</label>
         <input
           style={{
-            color: "white",
-            backgroundColor: theme.colorGreyDark,
+            color: "#E85a4f",
+            backgroundColor: "#D8c3a5",
           }}
           value={date}
           onChange={handleChange("date")}
@@ -167,7 +170,7 @@ function CreateContent() {
         <label htmlFor="priority">Priority</label>
         <select
           style={{
-            backgroundColor: theme.colorGreyDark,
+            backgroundColor: "#D8c3a5",
           }}
           value={priority}
           onChange={handleChange("priority")}
@@ -187,7 +190,7 @@ function CreateContent() {
         <label htmlFor="mood">Mood</label>
         <select
           style={{
-            backgroundColor: theme.colorGreyDark,
+            backgroundColor: "#D8c3a5",
           }}
           value={mood}
           onChange={handleChange("mood")}
@@ -208,7 +211,7 @@ function CreateContent() {
           <label htmlFor="mood">Mood After</label>
           <select
             style={{
-              backgroundColor: theme.colorGreyDark,
+              backgroundColor: "#D8c3a5",
             }}
             value={moodAfter}
             onChange={handleChange("moodAfter")}
@@ -229,7 +232,7 @@ function CreateContent() {
         <label htmlFor="workload">Workload</label>
         <select
           style={{
-            backgroundColor: theme.colorGreyDark,
+            backgroundColor: "#D8c3a5",
           }}
           value={workload}
           onChange={handleChange("workload")}
@@ -249,8 +252,8 @@ function CreateContent() {
         <label htmlFor="timeToComplete">Time to Complete (Minutes)</label>
         <input
           style={{
-            color: "white",
-            backgroundColor: theme.colorGreyDark,
+            color: "#E85a4f",
+            backgroundColor: "#D8c3a5",
           }}
           value={timeToComplete}
           onChange={handleChange("timeToComplete")}
@@ -260,16 +263,32 @@ function CreateContent() {
       </div>
 
       <div className="input-control">
-        <label htmlFor="dueTime">Due Time</label>
+        <label htmlFor="startTime">Start Time</label>
         <input
           style={{
-            color: "white",
-            backgroundColor: theme.colorGreyDark,
+            color: "#E85a4f",
+            backgroundColor: "#D8c3a5",
           }}
-          value={dueTime}
-          onChange={handleChange("dueTime")}
+          value={startTime}
+          onChange={handleChange("startTime")}
           type="time"
-          name="dueTime"
+          name="startTime"
+          placeholder="e.g, 30"
+        />
+      </div>
+
+      <div className="input-control">
+        <label htmlFor="duration">Duration</label>
+
+        <input
+          style={{
+            color: "#E85a4f",
+            backgroundColor: "#D8c3a5",
+          }}
+          value={duration}
+          onChange={handleChange("duration")}
+          type="number"
+          name="duration"
           placeholder="e.g, 30"
         />
       </div>
@@ -303,14 +322,32 @@ function CreateContent() {
         </div>
       )}
 
-      <div className="submit-btn gap-4 flex justify-end">
+      <div className="gap-4 flex justify-end">
         {busy && (
-          <Button
-            name="Go back"
-            padding={"0.8rem 2rem"}
-            borderRad={"0.8rem"}
-            background={"rgb(0, 163, 255)"}
-          />
+          <button
+            onClick={() => {
+              setTitle("");
+              setDescription("");
+              setDate("");
+              setCompleted(false);
+              setImportant(false);
+              setPriority("");
+              setMood("");
+              setWorkload("");
+              setTimeToComplete("");
+              setstartTime("00:00:00");
+              setMoodAfter("");
+            }}
+            type="button"
+            style={{
+              backgroundColor: theme.colorGrey1,
+              padding: "0.8rem 2rem",
+              borderRadius: "0.8rem",
+              color: theme.colorGrey3,
+            }}
+          >
+            Clear
+          </button>
         )}
 
         <Button
@@ -321,7 +358,7 @@ function CreateContent() {
           borderRad={"0.8rem"}
           fw={"500"}
           fs={"1.2rem"}
-          background={"rgb(0, 163, 255)"}
+          background="#8e8d8a"
         />
       </div>
     </CreateContentStyled>
@@ -349,9 +386,10 @@ const CreateContentStyled = styled.form`
       margin-bottom: 0.5rem;
       display: inline-block;
       font-size: clamp(0.9rem, 5vw, 1.2rem);
+      color: "#E85a4f !important";
 
       span {
-        color: ${(props) => props.theme.colorGrey3};
+        color: ${(props) => props.theme.colorPrimaryGreen};
       }
     }
 
@@ -360,14 +398,11 @@ const CreateContentStyled = styled.form`
       width: 100%;
       padding: 1rem;
       resize: none;
-      background-color: ${(props) => props.theme.colorGreyDark};
-      color: black; /* Set text color to black */
+      background-color: "#D8c3a5";
       border-radius: 0.5rem;
     }
 
     input[type="date"] {
-      /* Reset text color for date input */
-      color: black;
     }
   }
 
@@ -389,7 +424,6 @@ const CreateContentStyled = styled.form`
     }
 
     &:hover {
-      background: ${(props) => props.theme.colorPrimaryGreen} !important;
       color: ${(props) => props.theme.colorWhite} !important;
     }
   }

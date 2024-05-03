@@ -14,7 +14,16 @@ export default function Home() {
       return task.date === today && task.isCompleted === false;
     });
 
-    setFilteredTasks(filtered);
+    console.log("filtered", filtered);
+
+    // sorting by start time
+    const sorted = filtered.sort((a: any, b: any) => {
+      if (a.startTime < b.startTime) return -1;
+    });
+
+    console.log("sorted", sorted);
+
+    setFilteredTasks(sorted);
   }, [tasks]);
 
   return (
@@ -22,7 +31,7 @@ export default function Home() {
       <div className="flex-1">
         <Tasks />
       </div>
-      <div className="flex-1 p-4 h-fit border rounded-md">
+      <div className="flex-1 bg-[#EFFAFD] text-black p-4 h-fit border rounded-md">
         <h1 className="text-2xl font-bold">Today's Tasks</h1>
 
         <div className="mt-4">
@@ -31,10 +40,7 @@ export default function Home() {
               <h2 className="text-xl font-bold">{task.title}</h2>
 
               <p className="text-gray-500">{task.description}</p>
-              <p className="text-gray-500">
-                <span className="font-bold">Due: </span>
-                {task.dueTime}
-              </p>
+              <p className="text-gray-500">{task.startTime}</p>
             </div>
           ))}
 
