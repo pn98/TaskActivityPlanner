@@ -18,36 +18,90 @@ function page() {
       <table>
         <thead>
           <tr>
-            <th style={{
-              textAlign: "left",
-            }}>Title</th>
-            <th style={{
-              textAlign: "left",
-            }}>Description</th>
-            <th style={{
-              textAlign: "left",
-            }}>Date</th>
-            <th style={{
-              textAlign: "left",
-            }}>Workload</th>
-            <th style={{
-              textAlign: "left",
-            }}>Priority</th>
-            <th style={{
-              textAlign: "left",
-            }}>Completion Time</th>
-            <th style={{
-              textAlign: "left",
-            }}>Mood</th>
-            <th style={{
-              textAlign: "left",
-            }}>Mood After</th>
-            <th style={{
-              textAlign: "left",
-            }}>Status</th>
-            <th style={{
-              textAlign: "left",
-            }}>Actions</th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Title
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Description
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Date
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Workload
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Priority
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Duration
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Mood
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Actual Workload
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Mood After
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Actual Duration
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Status
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Actions
+            </th>
           </tr>
         </thead>
         {completedTasks.map((task: any) => (

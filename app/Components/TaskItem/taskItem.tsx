@@ -19,6 +19,7 @@ interface Props {
   mood: string;
   priority: string;
   moodAfter: string;
+  duration: string;
 }
 
 function TaskItem({
@@ -32,16 +33,17 @@ function TaskItem({
   completionTime,
   priority,
   moodAfter,
+  duration,
 }: Props) {
   const params = usePathname().split("/");
   const share = params[1] === "share";
   const { theme, deleteTask, updateTask, allTasks } = useGlobalState();
   const [edit, setEdit] = useState(false);
-  const [newCompletionTime, setCompletionTime] = useState(completionTime);
   const [newWorkload, setWorkload] = useState(workload);
   const [userId, setUserId] = useState("");
   const [message, setMessage] = useState("");
   const [newMoodAfter, setMoodAfter] = useState(moodAfter);
+  const [actualDuration, setActualDuration] = useState("");
 
   const shareTask = async () => {
     const task = {
@@ -82,12 +84,17 @@ function TaskItem({
         <td>{title}</td>
         <td>{description}</td>
         <td>{formatDate(date)}</td>
+        <td>{workload}</td>
+        <td>{priority}</td>
+
+        <td>{duration}</td>
+        <td>{mood}</td>
         <td>
           {edit ? (
             <>
               <select
                 style={{
-                  backgroundColor: theme.colorGreyDark,
+                  backgroundColor: "#4A8BDF",
                 }}
                 value={newWorkload}
                 onChange={(e: any) => setWorkload(e.target.value)}
@@ -106,31 +113,12 @@ function TaskItem({
             workload
           )}
         </td>
-        <td>{priority}</td>
-        <td>
-          {edit ? (
-            <>
-              <input
-                style={{
-                  backgroundColor: "gray",
-                }}
-                type="number"
-                className="w-16"
-                value={newCompletionTime}
-                onChange={(e) => setCompletionTime(e.target.value)}
-              />
-            </>
-          ) : (
-            completionTime
-          )}
-        </td>
-        <td>{mood}</td>
         <td>
           {edit ? (
             <>
               <select
                 style={{
-                  backgroundColor: theme.colorGreyDark,
+                  backgroundColor: "#4A8BDF",
                 }}
                 value={newMoodAfter}
                 onChange={(e: any) => setMoodAfter(e.target.value)}
@@ -147,8 +135,27 @@ function TaskItem({
                 )}
               </select>
             </>
+          ) : moodAfter ? (
+            moodAfter
           ) : (
-            moodAfter ? moodAfter : "N/A"
+            "N/A"
+          )}
+        </td>
+        <td>
+          {edit ? (
+            <>
+              <input
+                style={{
+                  backgroundColor: "#white",
+                }}
+                type="number"
+                className="w-16"
+                value={actualDuration}
+                onChange={(e) => setActualDuration(e.target.value)}
+              />
+            </>
+          ) : (
+            actualDuration
           )}
         </td>
         <td>
@@ -157,9 +164,9 @@ function TaskItem({
               if (edit) {
                 updateTask({
                   id,
-                  completionTime: newCompletionTime,
                   moodAfter: newMoodAfter,
-                  workload: newWorkload,
+                  actualDuration,
+                  actualWorkload: newWorkload,
                   isCompleted: !isCompleted,
                 });
               } else if (isCompleted) {
@@ -213,7 +220,8 @@ function TaskItem({
                 border: `1px solid ${theme.borderColor1}`,
                 borderRadius: "0.8rem",
                 marginBottom: "0.8rem",
-                color: theme.colorGrey4,
+                color: "white",
+                backgroundColor: "#E4E4e4"
               }}
               type="text"
               placeholder="Enter UserId"
@@ -225,7 +233,8 @@ function TaskItem({
                 border: `1px solid ${theme.borderColor1}`,
                 borderRadius: "0.8rem",
                 marginBottom: "0.8rem",
-                color: theme.colorGrey4,
+                color: "white",
+                backgroundColor: "#E4E4e4"
               }}
               type="text"
               placeholder="Message"
@@ -234,7 +243,7 @@ function TaskItem({
 
           <button
             style={{
-              backgroundColor: theme.colorPrimary,
+              backgroundColor: "#8e8d8a",
               padding: "0.8rem",
               border: "none",
               borderRadius: "0.8rem",

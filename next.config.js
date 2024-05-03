@@ -3,6 +3,9 @@ const nextConfig = {
   images: {
     domains: ["localhost", "https://img.clerk.com", "img.clerk.com"],
   },
+  experimental: {
+    serverActions: true,
+  },
 };
 
 module.exports = nextConfig;
