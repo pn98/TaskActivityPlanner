@@ -22,7 +22,8 @@ export async function POST(req: Request) {
       share,
       message,
       moodAfter,
-      dueTime
+      startTime,
+      duration,
     } = await req.json();
 
     if (!title || !description || !date) {
@@ -52,8 +53,9 @@ export async function POST(req: Request) {
         userId,
         share,
         message,
-        dueTime,
+        startTime,
         moodAfter,
+        duration,
       },
     });
 
@@ -88,10 +90,23 @@ export async function GET(req: Request) {
 export async function PUT(req: Request) {
   try {
     const { userId } = auth();
-    const { isCompleted, id, moodAfter, completionTime, workload } =
-      await req.json();
+    const {
+      isCompleted,
+      id,
+      moodAfter,
+      completionTime,
+      actualWorkload,
+      actualDuration,
+    } = await req.json();
 
-    console.log("PUT request", isCompleted, id, moodAfter, completionTime, workload);
+    console.log(
+      "PUT request",
+      isCompleted,
+      id,
+      moodAfter,
+      actualWorkload,
+      actualDuration
+    );
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized", status: 401 });
@@ -104,8 +119,8 @@ export async function PUT(req: Request) {
       data: {
         isCompleted,
         moodAfter,
-        completionTime,
-        workload,
+        actualDuration,
+        actualWorkload,
       },
     });
 

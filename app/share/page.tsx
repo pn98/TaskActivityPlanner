@@ -102,7 +102,7 @@ function Page() {
                 textAlign: "left",
               }}
             >
-              Completion Time
+              Duration
             </th>
             <th
               style={{
@@ -110,6 +110,27 @@ function Page() {
               }}
             >
               Mood
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Actual Workload
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Mood After
+            </th>
+            <th
+              style={{
+                textAlign: "left",
+              }}
+            >
+              Actual Duration
             </th>
             <th
               style={{
