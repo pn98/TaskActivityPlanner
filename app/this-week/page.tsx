@@ -90,12 +90,12 @@ const getProgressLineStyle = () => { // function to calculate the position of th
 return ( // return JSX for rendering the calendar view
   <>
     <div className="flex items-center mb-2 justify-between">
-      <h1 className="text-2xl font-bold">This Week</h1> // header indicating "This Week"
-      <div>{startOfWeek.toDateString()}</div> // display the start date of the current week
+      <h1 className="text-2xl font-bold">This Week</h1> 
+      <div>{startOfWeek.toDateString()}</div>
     </div>
-    <div className="relative"> // container for relative positioning
-      <div className="flex justify-between"> // container for day columns with space between them
-        {Array.from({ length: 7 }).map((_, index) => getDayColumn(index))} // map through 7 days to generate columns using getDayColumn function
+    <div className="relative">
+      <div className="flex justify-between"> 
+        {Array.from({ length: 7 }).map((_, index) => getDayColumn(index))} 
       </div>
       <div // progress line element
         style={{
