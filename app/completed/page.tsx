@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useGlobalState } from "../context/globalProvider";
-import TaskItem from "../Components/TaskItem/TaskItem";
+import TaskItem from "../Components/TaskItem/taskItem";
 
 function page() {
   const { completedTasks } = useGlobalState();

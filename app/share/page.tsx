@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useGlobalState } from "../context/globalProvider";
-import TaskItem from "../Components/TaskItem/TaskItem";
+import TaskItem from "../Components/TaskItem/taskItem";
 import { getPayment, createPayment } from "../actions/payment";
 import { useEffect } from "react";
 import Payment from "../Components/payment";
