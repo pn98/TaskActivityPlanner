@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
 import { useGlobalState } from "../context/globalProvider";
-import TaskItem from "../Components/TaskItem/TaskItem";
+import TaskItem from "../Components/TaskItem/taskItem";
 
+// define the page component
 function page() {
-  const { importantTasks } = useGlobalState();
+  const { importantTasks } = useGlobalState(); // get important tasks from global state
 
   return (
     <div
@@ -15,7 +16,7 @@ function page() {
       }}
     >
       {importantTasks.map((task: any) => (
-        <TaskItem key={task._id} {...task} />
+        <TaskItem key={task._id} {...task} /> // render TaskItem component for each important task
       ))}
     </div>
   );
