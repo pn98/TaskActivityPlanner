@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   const { amount } = body; // extracting amount from the request body
   const paymentIntent = await stripe.paymentIntents.create({
     amount, // specifying payment amount
-    currency: "GDP", // specifying currency as USD
+    currency: "GDP", // specifying currency as GDP
     automatic_payment_methods: {
       enabled: true,
     },
