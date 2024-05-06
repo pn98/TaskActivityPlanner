@@ -2,14 +2,16 @@
 import React from "react";
 import styled from "styled-components";
 
+// define the GlobalStyleProvider component
 interface Props {
   children: React.ReactNode;
 }
 
-function GlobalStyleProvider({ children }: Props) {
+function globalstyleprovider({ children }: Props) {
   return <GlobalStyles>{children}</GlobalStyles>;
 }
 
+// define the global styles using styled-components
 const GlobalStyles = styled.div`
   display: flex;
   padding: 2.5rem;
@@ -17,4 +19,4 @@ const GlobalStyles = styled.div`
   height: 100%;
 `;
 
-export default GlobalStyleProvider;
+export default globalstyleprovider;

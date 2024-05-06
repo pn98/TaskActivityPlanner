@@ -3,11 +3,12 @@ import React from "react";
 import { GlobalProvider } from "../context/globalProvider";
 import { Toaster } from "react-hot-toast";
 
+// Define the ContextProvider component
 interface Props {
   children: React.ReactNode;
 }
 
-function ContextProvider({ children }: Props) {
+function contextprovider({ children }: Props) {
   const [isReady, setIsReady] = React.useState(false);
 
   React.useEffect(() => {
@@ -16,6 +17,7 @@ function ContextProvider({ children }: Props) {
     }, 250);
   }, []);
 
+  // display loader until the component is ready
   if (!isReady) {
     return (
       <div className="w-full h-full flex items-center justify-center">
@@ -24,6 +26,7 @@ function ContextProvider({ children }: Props) {
     );
   }
 
+  // render the global provider and children
   return (
     <GlobalProvider>
       <Toaster />
@@ -32,4 +35,4 @@ function ContextProvider({ children }: Props) {
   );
 }
 
-export default ContextProvider;
+export default contextprovider;
