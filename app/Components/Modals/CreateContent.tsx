@@ -1,14 +1,15 @@
 "use client";
+import React, { useState } from "react"; // importing React and useState hook
+import { useGlobalState } from "../../context/globalProvider"; // importing global state hook
+import axios from "axios"; // importing axios for HTTP requests
+import toast from "react-hot-toast"; // importing toast notifications library
+import styled from "styled-components"; // importing styled-components library
+import Button from "../Button/Button"; // importing Button component
+import { add } from "@/app/utils/Icons"; // importing add icon
 
-import React, { useState } from "react";
-import { useGlobalState } from "../../context/globalProvider";
-import axios from "axios";
-import toast from "react-hot-toast";
-import styled from "styled-components";
-import Button from "../Button/Button";
-import { add } from "@/app/utils/Icons";
-
+// CreateContent component
 function CreateContent() {
+  // defining state variables
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -17,10 +18,16 @@ function CreateContent() {
   const [workload, setWorkload] = useState("Light");
   const [completionTime, setCompletionTime] = useState("");
 
+  // accessing theme and functions from global state
   const { theme, allTasks, closeModal } = useGlobalState();
-  const handleChange = (name: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+
+  // function to handle input change
+  const handleChange = (name: string) => (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
     const target = e.target;
-  
+
+    // updating state based on input name
     switch (name) {
       case "title":
         setTitle(target.value);
@@ -51,12 +58,12 @@ function CreateContent() {
         break;
     }
   };
-  
-  
 
+  // function to handle form submission
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
+    e.preventDefault(); // preventing default form submission behavior
 
+    // creating task object
     const task = {
       title,
       description,
@@ -68,23 +75,26 @@ function CreateContent() {
     };
 
     try {
+      // sending POST request to create task
       const res = await axios.post("/api/tasks", task);
 
+      // handling response
       if (res.data.error) {
-        toast.error(res.data.error);
+        toast.error(res.data.error); // displaying error message
       }
 
       if (!res.data.error) {
-        toast.success("Task created successfully.");
-        allTasks();
-        closeModal();
+        toast.success("Task created successfully."); // displaying success message
+        allTasks(); // refreshing tasks
+        closeModal(); // closing modal
       }
     } catch (error) {
-      toast.error("Something went wrong.");
-      console.log(error);
+      toast.error("Something went wrong."); // displaying generic error message
+      console.log(error); // logging error
     }
   };
 
+  // rendering the create task form
   return (
     <CreateContentStyled onSubmit={handleSubmit} theme={theme}>
       <h1>Create a Task</h1>
@@ -164,6 +174,7 @@ function CreateContent() {
         />
       </div>
       <div className="submit-btn flex justify-end">
+        {/* Button component for submitting the form */}
         <Button
           type="submit"
           name="Create Task"
@@ -179,6 +190,7 @@ function CreateContent() {
   );
 }
 
+// styled form component for create task form
 const CreateContentStyled = styled.form`
   > h1 {
     font-size: clamp(1.2rem, 5vw, 1.6rem);
@@ -259,4 +271,4 @@ const CreateContentStyled = styled.form`
   }
 `;
 
-export default CreateContent;
+export default CreateContent; // exporting CreateContent component
