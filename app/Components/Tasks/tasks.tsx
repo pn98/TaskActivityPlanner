@@ -1,53 +1,48 @@
 "use client";
 
-import React, { useState, useEffect } from "react"; // importing React, useState, and useEffect
-import styled from "styled-components"; // importing styled-components
-import Button from "../Button/Button"; // importing Button component
-import axios from "axios"; // importing axios for making HTTP requests
-import toast from "react-hot-toast"; // importing toast notification
-import { useGlobalState } from "../../context/globalProvider"; // importing useGlobalState hook
-import { add } from "../../utils/Icons"; // importing add icon
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import Button from "../Button/Button";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useGlobalState } from "../../context/globalProvider";
+import { add } from "../../utils/Icons";
 
-// CreateContent component
 function CreateContent() {
-  const [title, setTitle] = useState(""); // state for task title
-  const [description, setDescription] = useState(""); // state for task description
-  const [date, setDate] = useState(""); // state for due date
-  const [completed, setCompleted] = useState(false); // state for completion status
-  const [important, setImportant] = useState(false); // state for importance status
-  const [priority, setPriority] = useState(""); // state for task priority
-  const [mood, setMood] = useState(""); // state for mood
-  const [workload, setWorkload] = useState(""); // state for workload
-  const [timeToComplete, setTimeToComplete] = useState(""); // state for time to complete
-  const [moodAfter, setMoodAfter] = useState(""); // state for mood after task completion
-  const [busy, setBusy] = useState(false); // state for busy status
-  const [startTime, setStartTime] = useState("00:00:00"); // state for start time
-  const [duration, setDuration] = useState(""); // state for duration
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [completed, setCompleted] = useState(false);
+  const [important, setImportant] = useState(false);
+  const [priority, setPriority] = useState("");
+  const [mood, setMood] = useState("");
+  const [workload, setWorkload] = useState("");
+  const [timeToComplete, setTimeToComplete] = useState("");
+  const [moodAfter, setMoodAfter] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [startTime, setstartTime] = useState("00:00:00");
+  const [duration, setDuration] = useState("");
 
-  const { theme, allTasks, tasks } = useGlobalState(); // accessing theme, allTasks, and tasks from global state
+  const { theme, allTasks, tasks } = useGlobalState();
 
-  const priorities = ["Low", "Medium", "High"]; // priority options
-  const moods = ["Happy", "Anxious", "Focused", "Bored", "Excited"]; // mood options
-  const workloads = ["Light", "Moderate", "Heavy"]; // workload options
+  const priorities = ["Low", "Medium", "High"];
+  const moods = ["Happy", "Anxious", "Focued", "Bored", "Excited"];
+  const workloads = ["Light", "Moderate", "Heavy"];
 
-  // useEffect to check if tasks at date are too many
   useEffect(() => {
-    const tasksAtDate = tasks.filter((task: any) => task.date === date); // filtering tasks for the selected date
+    const tasksAtDate = tasks.filter((task: any) => task.date === date);
 
     if (tasksAtDate.length >= 5) {
-      // if there are more than or equal to 5 tasks for the selected date
-      setBusy(true); // set busy state to true
+      setBusy(true);
     } else {
-      setBusy(false); // set busy state to false
+      setBusy(false);
     }
   }, [allTasks, date]);
 
-  // useEffect to log completion status
   useEffect(() => {
     console.log(completed);
   }, [completed]);
 
-  // handleChange function to handle input changes
   const handleChange = (name: string) => (e: any) => {
     switch (name) {
       case "title":
@@ -81,19 +76,17 @@ function CreateContent() {
         setMoodAfter(e.target.value);
         break;
       case "startTime":
-        setStartTime(e.target.value);
+        setstartTime(e.target.value);
         break;
       case "duration":
         setDuration(e.target.value);
-        break;
       default:
         break;
     }
   };
 
-  // handleSubmit function to handle form submission
   const handleSubmit = async (e: any) => {
-    e.preventDefault(); // prevent default form submission behavior
+    e.preventDefault();
 
     const task = {
       title,
@@ -110,23 +103,22 @@ function CreateContent() {
     };
 
     try {
-      const res = await axios.post("/api/tasks", task); // making POST request to create task
+      const res = await axios.post("/api/tasks", task);
 
       if (res.data.error) {
-        toast.error(res.data.error); // displaying error message if error occurs
+        toast.error(res.data.error);
       }
 
       if (!res.data.error) {
-        toast.success("Task created"); // displaying success message if task is created successfully
-        allTasks(); // fetching all tasks
+        toast.success("Task created");
+        allTasks();
       }
     } catch (error) {
-      toast.error("Error has occurred"); // displaying error message if error occurs
-      console.log(error); // logging the error
+      toast.error("Error has occurred");
+      console.log(error);
     }
   };
 
-  // rendering the CreateContent component
   return (
     <CreateContentStyled onSubmit={handleSubmit} theme={theme}>
       <h1>Create a Task</h1>
@@ -134,8 +126,8 @@ function CreateContent() {
         <label htmlFor="title">Task Name</label>
         <input
           style={{
-            color: "#E85a4f",
-            backgroundColor: "#D8c3a5",
+            color: "#76323F",
+            backgroundColor: "#D7CEC7",
           }}
           type="text"
           id="title"
@@ -149,8 +141,8 @@ function CreateContent() {
         <label htmlFor="description">Description</label>
         <textarea
           style={{
-            color: "#E85a4f",
-            backgroundColor: "#D8c3a5",
+            color: "#76323F",
+            backgroundColor: "#D7CEC7",
           }}
           value={description}
           onChange={handleChange("description")}
@@ -164,8 +156,8 @@ function CreateContent() {
         <label htmlFor="date">Date Due</label>
         <input
           style={{
-            color: "#E85a4f",
-            backgroundColor: "#D8c3a5",
+            color: "#76323F",
+            backgroundColor: "#D7CEC7",
           }}
           value={date}
           onChange={handleChange("date")}
@@ -178,7 +170,8 @@ function CreateContent() {
         <label htmlFor="priority">Priority</label>
         <select
           style={{
-            backgroundColor: "#D8c3a5",
+            color: "#76323F",
+            backgroundColor: "#D7CEC7",
           }}
           value={priority}
           onChange={handleChange("priority")}
@@ -198,7 +191,8 @@ function CreateContent() {
         <label htmlFor="mood">Mood</label>
         <select
           style={{
-            backgroundColor: "#D8c3a5",
+            color: "#76323F",
+            backgroundColor: "#D7CEC7",
           }}
           value={mood}
           onChange={handleChange("mood")}
@@ -219,7 +213,8 @@ function CreateContent() {
           <label htmlFor="mood">Mood After</label>
           <select
             style={{
-              backgroundColor: "#D8c3a5",
+              color: "#76323F",
+              backgroundColor: "#D7CEC7",
             }}
             value={moodAfter}
             onChange={handleChange("moodAfter")}
@@ -240,7 +235,8 @@ function CreateContent() {
         <label htmlFor="workload">Workload</label>
         <select
           style={{
-            backgroundColor: "#D8c3a5",
+            color: "#76323F",
+            backgroundColor: "#D7CEC7",
           }}
           value={workload}
           onChange={handleChange("workload")}
@@ -260,8 +256,8 @@ function CreateContent() {
         <label htmlFor="timeToComplete">Time to Complete (Minutes)</label>
         <input
           style={{
-            color: "#E85a4f",
-            backgroundColor: "#D8c3a5",
+            color: "#76323F",
+            backgroundColor: "#D7CEC7",
           }}
           value={timeToComplete}
           onChange={handleChange("timeToComplete")}
@@ -274,8 +270,8 @@ function CreateContent() {
         <label htmlFor="startTime">Start Time</label>
         <input
           style={{
-            color: "#E85a4f",
-            backgroundColor: "#D8c3a5",
+            color: "#76323F",
+            backgroundColor: "#D7CEC7",
           }}
           value={startTime}
           onChange={handleChange("startTime")}
@@ -290,8 +286,8 @@ function CreateContent() {
 
         <input
           style={{
-            color: "#E85a4f",
-            backgroundColor: "#D8c3a5",
+            color: "#76323F",
+            backgroundColor: "#D7CEC7",
           }}
           value={duration}
           onChange={handleChange("duration")}
@@ -311,11 +307,21 @@ function CreateContent() {
           id="completed"
         />
       </div>
+      {/* <div className="input-control toggler">
+        <label htmlFor="important">Toggle Important</label>
+        <input
+          value={important.toString()}
+          onChange={handleChange("important")}
+          type="checkbox"
+          name="important"
+          id="important"
+        />
+      </div> */}
 
       {busy && (
         <div className="input-control">
           <p>
-            This day contains 5 or more tasks already, would you like to Add Anyway?
+            You have too many tasks for this date. Please select another date.
           </p>
         </div>
       )}
@@ -324,7 +330,6 @@ function CreateContent() {
         {busy && (
           <button
             onClick={() => {
-              // clear all form fields
               setTitle("");
               setDescription("");
               setDate("");
@@ -334,7 +339,7 @@ function CreateContent() {
               setMood("");
               setWorkload("");
               setTimeToComplete("");
-              setStartTime("00:00:00");
+              setstartTime("00:00:00");
               setMoodAfter("");
             }}
             type="button"
@@ -349,7 +354,6 @@ function CreateContent() {
           </button>
         )}
 
-        {/* Submit Button */}
         <Button
           type="submit"
           name={busy ? "Add anyway" : "Create Task"}
@@ -365,14 +369,13 @@ function CreateContent() {
   );
 }
 
-// styled component for CreateContentStyled
 const CreateContentStyled = styled.form`
   > h1 {
     font-size: clamp(1.2rem, 5vw, 1.6rem);
     font-weight: 600;
   }
 
-  color: ${(props) => props.theme.colorGrey1}; // text color
+  color: ${(props) => props.theme.colorGrey1};
 
   .input-control {
     position: relative;
@@ -387,10 +390,10 @@ const CreateContentStyled = styled.form`
       margin-bottom: 0.5rem;
       display: inline-block;
       font-size: clamp(0.9rem, 5vw, 1.2rem);
-      color: "#E85a4f !important"; // label color
+      color: "#76323F !important";
 
       span {
-        color: ${(props) => props.theme.colorPrimaryGreen}; // span color
+        color: ${(props) => props.theme.colorPrimaryGreen};
       }
     }
 
@@ -399,8 +402,8 @@ const CreateContentStyled = styled.form`
       width: 100%;
       padding: 1rem;
       resize: none;
-      background-color: "#D8c3a5"; // input background color
-      border-radius: 0.5rem; // border radius
+      background-color: "#D7CEC7";
+      border-radius: 0.5rem;
     }
 
     input[type="date"] {
@@ -408,7 +411,7 @@ const CreateContentStyled = styled.form`
   }
 
   .submit-btn button {
-    transition: all 0.35s ease-in-out; // transition effect
+    transition: all 0.35s ease-in-out;
 
     @media screen and (max-width: 500px) {
       font-size: 0.9rem !important;
@@ -421,11 +424,11 @@ const CreateContentStyled = styled.form`
     }
 
     i {
-      color: ${(props) => props.theme.colorGrey0}; // icon color
+      color: ${(props) => props.theme.colorGrey0};
     }
 
     &:hover {
-      color: ${(props) => props.theme.colorWhite} !important; // hover color
+      color: ${(props) => props.theme.colorWhite} !important;
     }
   }
 
@@ -446,4 +449,4 @@ const CreateContentStyled = styled.form`
   }
 `;
 
-export default CreateContent; // exporting CreateContent component
+export default CreateContent;
