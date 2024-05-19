@@ -1,15 +1,45 @@
 .color-empty {
   fill: green !important;
 }
+
 .color-green {
   fill: green !important;
 } /* No tasks */
+
 .color-yellow {
   fill: yellow !important;
 } /* 1-2 tasks */
+
 .color-orange {
   fill: orange !important;
 } /* 3-4 tasks */
+
 .color-red {
   fill: red !important;
 } /* 5+ tasks */
+
+.task-heatmaps-header {
+  color: #D7CEC7;
+}
+
+.task-heatmaps-description {
+  color: #D7CEC7;
+}
+
+.section-header {
+  color: #D7CEC7;
+}
+
+/* Tooltip styles */
+.heatmap-tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  white-space: nowrap;
+  z-index: 1000;
+}
