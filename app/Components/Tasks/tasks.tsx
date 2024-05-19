@@ -1,48 +1,53 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Button from "../Button/Button";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { useGlobalState } from "../../context/globalProvider";
-import { add } from "../../utils/Icons";
+import React, { useState, useEffect } from "react"; // importing React, useState, and useEffect
+import styled from "styled-components"; // importing styled-components
+import Button from "../Button/Button"; // importing Button component
+import axios from "axios"; // importing axios for making HTTP requests
+import toast from "react-hot-toast"; // importing toast notification
+import { useGlobalState } from "../../context/globalProvider"; // importing useGlobalState hook
+import { add } from "../../utils/Icons"; // importing add icon
 
+// CreateContent component
 function CreateContent() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
-  const [completed, setCompleted] = useState(false);
-  const [important, setImportant] = useState(false);
-  const [priority, setPriority] = useState("");
-  const [mood, setMood] = useState("");
-  const [workload, setWorkload] = useState("");
-  const [timeToComplete, setTimeToComplete] = useState("");
-  const [moodAfter, setMoodAfter] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [startTime, setstartTime] = useState("00:00:00");
-  const [duration, setDuration] = useState("");
+  const [title, setTitle] = useState(""); // state for task title
+  const [description, setDescription] = useState(""); // state for task description
+  const [date, setDate] = useState(""); // state for due date
+  const [completed, setCompleted] = useState(false); // state for completion status
+  const [important, setImportant] = useState(false); // state for importance status
+  const [priority, setPriority] = useState(""); // state for task priority
+  const [mood, setMood] = useState(""); // state for mood
+  const [workload, setWorkload] = useState(""); // state for workload
+  const [timeToComplete, setTimeToComplete] = useState(""); // state for time to complete
+  const [moodAfter, setMoodAfter] = useState(""); // state for mood after task completion
+  const [busy, setBusy] = useState(false); // state for busy status
+  const [startTime, setstartTime] = useState("00:00:00"); // state for start time
+  const [duration, setDuration] = useState(""); // state for duration
 
-  const { theme, allTasks, tasks } = useGlobalState();
+  const { theme, allTasks, tasks } = useGlobalState(); // accessing theme, allTasks, and tasks from global state
 
-  const priorities = ["Low", "Medium", "High"];
-  const moods = ["Happy", "Anxious", "Focued", "Bored", "Excited"];
-  const workloads = ["Light", "Moderate", "Heavy"];
+  const priorities = ["Low", "Medium", "High"]; // priority options
+  const moods = ["Happy", "Anxious", "Focused", "Bored", "Excited"]; // mood options
+  const workloads = ["Light", "Moderate", "Heavy"]; // workload options
 
+  // useEffect to check if tasks at date are too many
   useEffect(() => {
-    const tasksAtDate = tasks.filter((task: any) => task.date === date);
+    const tasksAtDate = tasks.filter((task: any) => task.date === date); // filtering tasks for the selected date
 
     if (tasksAtDate.length >= 5) {
-      setBusy(true);
+      // if there are more than or equal to 5 tasks for the selected date
+      setBusy(true); // set busy state to true
     } else {
-      setBusy(false);
+      setBusy(false); // set busy state to false
     }
   }, [allTasks, date]);
 
+  // useEffect to log completion status
   useEffect(() => {
     console.log(completed);
   }, [completed]);
 
+  // handleChange function to handle input changes
   const handleChange = (name: string) => (e: any) => {
     switch (name) {
       case "title":
@@ -80,13 +85,15 @@ function CreateContent() {
         break;
       case "duration":
         setDuration(e.target.value);
+        break;
       default:
         break;
     }
   };
 
+  // handleSubmit function to handle form submission
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
+    e.preventDefault(); // prevent default form submission behavior
 
     const task = {
       title,
@@ -103,22 +110,23 @@ function CreateContent() {
     };
 
     try {
-      const res = await axios.post("/api/tasks", task);
+      const res = await axios.post("/api/tasks", task); // making POST request to create task
 
       if (res.data.error) {
-        toast.error(res.data.error);
+        toast.error(res.data.error); // displaying error message if error occurs
       }
 
       if (!res.data.error) {
-        toast.success("Task created");
-        allTasks();
+        toast.success("Task created"); // displaying success message if task is created successfully
+        allTasks(); // fetching all tasks
       }
     } catch (error) {
-      toast.error("Error has occurred");
-      console.log(error);
+      toast.error("Error has occurred"); // displaying error message if error occurs
+      console.log(error); // logging the error
     }
   };
 
+  // rendering the CreateContent component
   return (
     <CreateContentStyled onSubmit={handleSubmit} theme={theme}>
       <h1>Create a Task</h1>
@@ -321,7 +329,7 @@ function CreateContent() {
       {busy && (
         <div className="input-control">
           <p>
-            You have too many tasks for this date. Please select another date.
+            This day contains 5 or more tasks already, would you like to Add Anyway?
           </p>
         </div>
       )}
@@ -330,6 +338,7 @@ function CreateContent() {
         {busy && (
           <button
             onClick={() => {
+              // clear all form fields
               setTitle("");
               setDescription("");
               setDate("");
@@ -354,6 +363,7 @@ function CreateContent() {
           </button>
         )}
 
+        {/* Submit Button */}
         <Button
           type="submit"
           name={busy ? "Add anyway" : "Create Task"}
@@ -369,13 +379,14 @@ function CreateContent() {
   );
 }
 
+// styled component for CreateContentStyled
 const CreateContentStyled = styled.form`
   > h1 {
     font-size: clamp(1.2rem, 5vw, 1.6rem);
     font-weight: 600;
   }
 
-  color: ${(props) => props.theme.colorGrey1};
+  color: ${(props) => props.theme.colorGrey1}; // text color
 
   .input-control {
     position: relative;
@@ -390,10 +401,10 @@ const CreateContentStyled = styled.form`
       margin-bottom: 0.5rem;
       display: inline-block;
       font-size: clamp(0.9rem, 5vw, 1.2rem);
-      color: "#76323F !important";
+      color: "#76323F !important"; // label color
 
       span {
-        color: ${(props) => props.theme.colorPrimaryGreen};
+        color: ${(props) => props.theme.colorPrimaryGreen}; // span color
       }
     }
 
@@ -402,8 +413,8 @@ const CreateContentStyled = styled.form`
       width: 100%;
       padding: 1rem;
       resize: none;
-      background-color: "#D7CEC7";
-      border-radius: 0.5rem;
+      background-color: "#D7CEC7"; // input background color
+      border-radius: 0.5rem; // border radius
     }
 
     input[type="date"] {
@@ -411,7 +422,7 @@ const CreateContentStyled = styled.form`
   }
 
   .submit-btn button {
-    transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out; // transition effect
 
     @media screen and (max-width: 500px) {
       font-size: 0.9rem !important;
@@ -424,11 +435,11 @@ const CreateContentStyled = styled.form`
     }
 
     i {
-      color: ${(props) => props.theme.colorGrey0};
+      color: ${(props) => props.theme.colorGrey0}; // icon color
     }
 
     &:hover {
-      color: ${(props) => props.theme.colorWhite} !important;
+      color: ${(props) => props.theme.colorWhite} !important; // hover color
     }
   }
 
@@ -449,4 +460,4 @@ const CreateContentStyled = styled.form`
   }
 `;
 
-export default CreateContent;
+export default CreateContent; // exporting CreateContent component
