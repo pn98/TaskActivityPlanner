@@ -132,9 +132,9 @@ export async function PUT(req: Request) {
       },
     });
 
-    return NextResponse.json(task); // returning updated task
+    return NextResponse.json(task);
   } catch (error) {
-    console.log("ERROR UPDATING TASK: ", error); // logging error if encountered while updating task
-    return NextResponse.json({ error: "Error deleting task", status: 500 }); // returning error response
+    console.log("ERROR UPDATING TASK: ", error);
+    return NextResponse.json({ error: "Error updating task", status: 500 });
   }
 }
