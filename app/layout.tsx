@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
-import { ClerkProvider, auth } from "@clerk/nextjs";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 
 import "./globals.css";
 import Sidebar from "./Components/Sidebar/Sidebar";
@@ -23,8 +23,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { userId } = auth();
-
   return (
     <ClerkProvider>
       <html lang="en">
@@ -46,7 +44,7 @@ export default function RootLayout({
           <ContextProvider>
             <GlobalStyleProvider>
               <div
-                className="bg-[#E85A45] text-black"
+                className="bg-[#76323F] text-black"
                 style={{
                   width: "75vw",
                   height: "100%",
@@ -58,7 +56,9 @@ export default function RootLayout({
               >
                 <div className="w-full h-full">{children}</div>
               </div>
-              {userId && <Sidebar />}
+              <SignedIn>
+                <Sidebar />
+              </SignedIn>
             </GlobalStyleProvider>
           </ContextProvider>
         </body>

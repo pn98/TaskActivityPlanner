@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"; // importing React, useState, and useEffect
 import styled from "styled-components"; // importing styled-components
-import Button from "../Button/Button"; // importing Button component
+import Button from "../Button/button"; // importing Button component
 import axios from "axios"; // importing axios for making HTTP requests
 import toast from "react-hot-toast"; // importing toast notification
 import { useGlobalState } from "../../context/globalProvider"; // importing useGlobalState hook
@@ -21,8 +21,7 @@ function CreateContent() {
   const [timeToComplete, setTimeToComplete] = useState(""); // state for time to complete
   const [moodAfter, setMoodAfter] = useState(""); // state for mood after task completion
   const [busy, setBusy] = useState(false); // state for busy status
-  const [startTime, setstartTime] = useState("00:00:00"); // state for start time
-  const [duration, setDuration] = useState(""); // state for duration
+  const [startTime, setStartTime] = useState("00:00:00"); // state for start time
 
   const { theme, allTasks, tasks } = useGlobalState(); // accessing theme, allTasks, and tasks from global state
 
@@ -81,10 +80,7 @@ function CreateContent() {
         setMoodAfter(e.target.value);
         break;
       case "startTime":
-        setstartTime(e.target.value);
-        break;
-      case "duration":
-        setDuration(e.target.value);
+        setStartTime(e.target.value);
         break;
       default:
         break;
@@ -196,7 +192,7 @@ function CreateContent() {
       </div>
 
       <div className="input-control">
-        <label htmlFor="mood">Mood</label>
+        <label htmlFor="mood">Predicted Mood</label>
         <select
           style={{
             color: "#76323F",
@@ -218,7 +214,7 @@ function CreateContent() {
 
       {completed === true && (
         <div className="input-control">
-          <label htmlFor="mood">Mood After</label>
+          <label htmlFor="moodAfter">Mood Perception After</label>
           <select
             style={{
               color: "#76323F",
@@ -226,8 +222,8 @@ function CreateContent() {
             }}
             value={moodAfter}
             onChange={handleChange("moodAfter")}
-            name="mood"
-            id="mood"
+            name="moodAfter"
+            id="moodAfter"
           >
             <option value="">Select Mood</option>
             {moods.map((mood) => (
@@ -261,20 +257,6 @@ function CreateContent() {
       </div>
 
       <div className="input-control">
-        <label htmlFor="timeToComplete">Time to Complete (Minutes)</label>
-        <input
-          style={{
-            color: "#76323F",
-            backgroundColor: "#D7CEC7",
-          }}
-          value={timeToComplete}
-          onChange={handleChange("timeToComplete")}
-          type="number"
-          name="timeToComplete"
-        />
-      </div>
-
-      <div className="input-control">
         <label htmlFor="startTime">Start Time</label>
         <input
           style={{
@@ -290,23 +272,21 @@ function CreateContent() {
       </div>
 
       <div className="input-control">
-        <label htmlFor="duration">Duration</label>
-
+        <label htmlFor="timeToComplete">Duration (Minutes)</label>
         <input
           style={{
             color: "#76323F",
             backgroundColor: "#D7CEC7",
           }}
-          value={duration}
-          onChange={handleChange("duration")}
+          value={timeToComplete}
+          onChange={handleChange("timeToComplete")}
           type="number"
-          name="duration"
-          placeholder="e.g, 30"
+          name="timeToComplete"
         />
       </div>
 
       <div className="input-control toggler">
-        <label htmlFor="completed">Toggle Completed</label>
+        <label htmlFor="completed">Task Complete?</label>
         <input
           value={completed.toString()}
           onChange={handleChange("completed")}
@@ -315,16 +295,6 @@ function CreateContent() {
           id="completed"
         />
       </div>
-      {/* <div className="input-control toggler">
-        <label htmlFor="important">Toggle Important</label>
-        <input
-          value={important.toString()}
-          onChange={handleChange("important")}
-          type="checkbox"
-          name="important"
-          id="important"
-        />
-      </div> */}
 
       {busy && (
         <div className="input-control">
@@ -348,7 +318,7 @@ function CreateContent() {
               setMood("");
               setWorkload("");
               setTimeToComplete("");
-              setstartTime("00:00:00");
+              setStartTime("00:00:00");
               setMoodAfter("");
             }}
             type="button"

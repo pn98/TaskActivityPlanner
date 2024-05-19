@@ -22,14 +22,12 @@ model Task {
   workload       String?
   actualWorkload String?
   startTime      String?
-  duration       String?
   actualDuration String?
   completionTime String?
   userId         String
   share          Boolean?
   message        String?
 }
-
 
 model Payment {
   id             String     @id @default(cuid()) @map("_id")

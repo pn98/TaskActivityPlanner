@@ -12,3 +12,13 @@ body {
     padding: 20px;
     transition: background-color 0.3s ease; /* Smooth transition for background color change */
 }
+
+.task-container {
+    background-color: #fff;
+    color: #000;
+  }
+  
+  .header-text {
+    color: #D7CEC7;
+  }
+  

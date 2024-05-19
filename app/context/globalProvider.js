@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { createContext, useState, useContext, useEffect } from "react";
 import themes from "./themes";
@@ -6,39 +6,39 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useUser } from "@clerk/nextjs";
 
-// create a context for the global state
+// Create contexts for global state and updates
 export const GlobalContext = createContext();
 export const GlobalUpdateContext = createContext();
 
-// define the global provider component
+// Define the global provider component
 export const GlobalProvider = ({ children }) => {
   const { user } = useUser();
 
-  // state variables
-  const [selectedTheme, setSelectedTheme] = useState(0); // selected theme index
-  const [isLoading, setIsLoading] = useState(false); // flag indicating whether tasks are being loaded
-  const [modal, setModal] = useState(false); // flag indicating whether a modal is open
-  const [collapsed, setCollapsed] = useState(false); // flag indicating whether the sidebar is collapsed
-  const [tasks, setTasks] = useState([]); // array of tasks
+  // State variables
+  const [selectedTheme, setSelectedTheme] = useState(0); // Selected theme index
+  const [isLoading, setIsLoading] = useState(false); // Flag indicating whether tasks are being loaded
+  const [modal, setModal] = useState(false); // Flag indicating whether a modal is open
+  const [collapsed, setCollapsed] = useState(false); // Flag indicating whether the sidebar is collapsed
+  const [tasks, setTasks] = useState([]); // Array of tasks
 
-  const theme = themes[selectedTheme]; // selected theme
+  const theme = themes[selectedTheme]; // Selected theme
 
-  // open modal function
+  // Open modal function
   const openModal = () => {
     setModal(true);
   };
 
-  // close modal function
+  // Close modal function
   const closeModal = () => {
     setModal(false);
   };
 
-  // collapse menu function
+  // Collapse menu function
   const collapseMenu = () => {
     setCollapsed(!collapsed);
   };
 
-  // function to fetch all tasks
+  // Function to fetch all tasks
   const allTasks = async () => {
     setIsLoading(true);
     try {
@@ -47,16 +47,17 @@ export const GlobalProvider = ({ children }) => {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       });
       setTasks(sorted);
-      setIsLoading(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // function to delete a task
+  // Function to delete a task
   const deleteTask = async (id) => {
     try {
-      const res = await axios.delete(`/api/tasks/${id}`);
+      await axios.delete(`/api/tasks/${id}`);
       toast.success("Task deleted");
       allTasks();
     } catch (error) {
@@ -65,10 +66,10 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  // function to update a task
+  // Function to update a task
   const updateTask = async (task) => {
     try {
-      const res = await axios.put(`/api/tasks`, task);
+      await axios.put(`/api/tasks`, task);
       toast.success("Task updated");
       allTasks();
     } catch (error) {
@@ -77,7 +78,25 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  // filter tasks based on their completion status
+  // Function to complete a task and update the actual duration
+  const completeTask = async (id, actualDuration) => {
+    try {
+      const taskToUpdate = tasks.find((task) => task.id === id);
+      if (taskToUpdate) {
+        const updatedTask = {
+          ...taskToUpdate,
+          actualDuration,
+          isCompleted: true,
+        };
+        await updateTask(updatedTask);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
+
+  // Filter tasks based on their completion status
   const completedTasks = tasks.filter((task) => task.isCompleted === true);
   const importantTasks = tasks.filter((task) => task.isImportant === true);
   const incompleteTasks = tasks.filter((task) => task.isCompleted === false);
@@ -97,6 +116,7 @@ export const GlobalProvider = ({ children }) => {
         importantTasks,
         incompleteTasks,
         updateTask,
+        completeTask,
         modal,
         openModal,
         closeModal,
@@ -112,6 +132,6 @@ export const GlobalProvider = ({ children }) => {
   );
 };
 
-// custom hook to access the global state
+// Custom hooks to access the global state and updates
 export const useGlobalState = () => useContext(GlobalContext);
 export const useGlobalUpdate = () => useContext(GlobalUpdateContext);

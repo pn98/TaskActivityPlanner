@@ -24,7 +24,6 @@ export async function POST(req: Request) {
       message,
       moodAfter,
       startTime,
-      duration,
     } = await req.json();
 
     // checking for missing required fields
@@ -59,7 +58,6 @@ export async function POST(req: Request) {
         message,
         startTime,
         moodAfter,
-        duration,
       },
     });
 
@@ -132,9 +130,10 @@ export async function PUT(req: Request) {
       },
     });
 
-    return NextResponse.json(task);
+    return NextResponse.json(task); // returning updated task
   } catch (error) {
-    console.log("ERROR UPDATING TASK: ", error);
-    return NextResponse.json({ error: "Error updating task", status: 500 });
+    console.log("ERROR UPDATING TASK: ", error); // logging error if encountered while updating task
+    return NextResponse.json({ error: "Error deleting task", status: 500 }); // returning error response
   }
 }
+

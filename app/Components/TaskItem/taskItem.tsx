@@ -1,13 +1,12 @@
-import React, { useState } from "react"; // importing React and useState hook
-import styled from "styled-components"; // importing styled-components
-import { edit, trash } from "@/app/utils/Icons"; // importing icons
-import formatDate from "@/app/utils/formatDate"; // importing formatDate utility function
-import { useGlobalState } from "@/app/context/globalProvider"; // importing useGlobalState hook
-import axios from "axios"; // importing axios for making HTTP requests
-import { toast } from "react-hot-toast"; // importing toast notification
-import { usePathname } from "next/navigation"; // importing usePathname hook from next/navigation
+import React, { useState } from "react";
+import styled from "styled-components";
+import { edit, trash } from "@/app/utils/Icons";
+import formatDate from "@/app/utils/formatDate";
+import { useGlobalState } from "@/app/context/globalProvider";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { usePathname } from "next/navigation";
 
-// interface for props of TaskItem component
 interface Props {
   title: string;
   description: string;
@@ -19,10 +18,13 @@ interface Props {
   mood: string;
   priority: string;
   moodAfter: string;
-  duration: string;
+  actualWorkload: string;
+  actualDuration: string;
+  startTime: string;
+  timeToComplete: string;
 }
 
-// TaskItem component
+// TaskItem component definition
 function TaskItem({
   title,
   description,
@@ -34,19 +36,23 @@ function TaskItem({
   completionTime,
   priority,
   moodAfter,
-  duration,
+  actualWorkload,
+  actualDuration,
+  startTime,
+  timeToComplete,
 }: Props) {
-  const params = usePathname().split("/"); // getting pathname and splitting it
-  const share = params[1] === "share"; // checking if share parameter is present in the pathname
-  const { theme, deleteTask, updateTask, allTasks } = useGlobalState(); // accessing theme, deleteTask, updateTask, and allTasks function from global state
-  const [editMode, setEditMode] = useState(false); // state for edit mode
-  const [newWorkload, setNewWorkload] = useState(workload); // state for new workload
-  const [userId, setUserId] = useState(""); // state for user ID
-  const [message, setMessage] = useState(""); // state for message
-  const [newMoodAfter, setNewMoodAfter] = useState(moodAfter); // state for new mood after
-  const [actualDuration, setActualDuration] = useState(""); // state for actual duration
+  const params = usePathname().split("/");
+  const share = params[1] === "share";
+  const { theme, deleteTask, updateTask, allTasks } = useGlobalState();
+  const [edit, setEdit] = useState(false);
+  const [newWorkload, setWorkload] = useState(workload);
+  const [userId, setUserId] = useState("");
+  const [message, setMessage] = useState("");
+  const [newMoodAfter, setMoodAfter] = useState(moodAfter);
+  const [newActualDuration, setActualDuration] = useState(actualDuration);
+  const [newTimeToComplete, setTimeToComplete] = useState(timeToComplete);
 
-  // function to share task
+  // Function to share task
   const shareTask = async () => {
     const task = {
       title,
@@ -56,7 +62,7 @@ function TaskItem({
       priority,
       mood,
       workload,
-      timeToComplete: completionTime,
+      timeToComplete,
       userId: userId,
       share: true,
       message,
@@ -64,157 +70,201 @@ function TaskItem({
     };
 
     try {
-      const res = await axios.post("/api/tasks", task); // making POST request to create task
+      const res = await axios.post("/api/tasks", task);
 
       if (res.data.error) {
-        toast.error(res.data.error); // displaying error message if error occurs
+        toast.error(res.data.error);
       }
 
       if (!res.data.error) {
-        toast.success("Task Shared"); // displaying success message if task is shared successfully
-        allTasks(); // fetching all tasks
+        toast.success("Task Shared");
+        allTasks();
       }
     } catch (error) {
-      toast.error("Error has occurred"); // displaying error message if error occurs
-      console.log(error); // logging the error
+      toast.error("Error has occurred");
+      console.log(error);
     }
   };
 
-  // rendering the TaskItem component
+  // Function to handle task update
+  const handleUpdateTask = () => {
+    updateTask({
+      id,
+      moodAfter: newMoodAfter,
+      actualDuration: newActualDuration,
+      actualWorkload: newWorkload,
+      timeToComplete: newTimeToComplete,
+      isCompleted: !isCompleted,
+    });
+    setEdit(false);
+  };
+
   return (
     <>
-      {/* TaskItemRow */}
       <TaskItemRow theme={theme}>
-        <td>{title}</td>
-        <td>{description}</td>
-        <td>{formatDate(date)}</td>
-        <td>{workload}</td>
-        <td>{priority}</td>
-        <td>{duration}</td>
-        <td>{mood}</td>
-        <td>
-          {editMode ? (
-            <>
-              {/* Select for new workload */}
-              <select
-                style={{
-                  backgroundColor: "#4A8BDF",
-                }}
-                value={newWorkload}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                  setNewWorkload(e.target.value)
-                }
-                name="workload"
-                id="workload"
-              >
-                <option value="">Select Workload</option>
-                {["Low", "Medium", "High"].map((workloadOption) => (
-                  <option key={workloadOption} value={workloadOption}>
-                    {workloadOption}
+        {/* Task title */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>{title}</td>
+        {/* Task description */}
+        <td
+          style={{
+            textAlign: "center",
+            maxWidth: "200px",
+            wordWrap: "break-word",
+            fontSize: "0.8rem",
+            color: "#D7CEC7",
+          }}
+        >
+          {description}
+        </td>
+        {/* Task date */}
+        <td
+          style={{
+            textAlign: "center",
+            maxWidth: "100px",
+            fontSize: "0.8rem",
+            color: "#D7CEC7",
+          }}
+        >
+          {formatDate(date)}
+        </td>
+        {/* Task start time */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>{startTime}</td>
+        {/* Task duration (minutes) */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>
+          {edit ? (
+            <input
+              style={{
+                backgroundColor: "#4A8BDF",
+                textAlign: "center",
+                padding: "0.3rem",
+                width: "100%",
+                fontSize: "0.8rem",
+                color: "#D7CEC7",
+              }}
+              type="number"
+              value={newTimeToComplete}
+              onChange={(e) => setTimeToComplete(e.target.value)}
+            />
+          ) : (
+            timeToComplete
+          )}
+        </td>
+        {/* Task workload */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>{workload}</td>
+        {/* Task mood */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>{mood}</td>
+        {/* Task priority */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>{priority}</td>
+        {/* Task actual workload */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>
+          {edit ? (
+            <select
+              style={{
+                backgroundColor: "#4A8BDF",
+                textAlign: "center",
+                padding: "0.3rem",
+                width: "100%",
+                fontSize: "0.8rem",
+                color: "#D7CEC7",
+              }}
+              value={newWorkload}
+              onChange={(e) => setWorkload(e.target.value)}
+              name="workload"
+              id="workload"
+            >
+              <option value="">Select Workload</option>
+              {["Low", "Medium", "High"].map((workload) => (
+                <option key={workload} value={workload}>
+                  {workload}
+                </option>
+              ))}
+            </select>
+          ) : (
+            actualWorkload
+          )}
+        </td>
+        {/* Task mood after */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>
+          {edit ? (
+            <select
+              style={{
+                backgroundColor: "#4A8BDF",
+                textAlign: "center",
+                padding: "0.3rem",
+                width: "100%",
+                fontSize: "0.8rem",
+                color: "#D7CEC7",
+              }}
+              value={newMoodAfter}
+              onChange={(e) => setMoodAfter(e.target.value)}
+              name="mood"
+              id="mood"
+            >
+              <option value="">Select Mood</option>
+              {["Happy", "Anxious", "Focused", "Bored", "Excited"].map(
+                (mood) => (
+                  <option key={mood} value={mood}>
+                    {mood}
                   </option>
-                ))}
-              </select>
-            </>
+                )
+              )}
+            </select>
           ) : (
-            workload
+            moodAfter ? moodAfter : "N/A"
           )}
         </td>
-        <td>
-          {editMode ? (
-            <>
-              {/* Select for new mood after */}
-              <select
-                style={{
-                  backgroundColor: "#4A8BDF",
-                }}
-                value={newMoodAfter}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                  setNewMoodAfter(e.target.value)
-                }
-                name="mood"
-                id="mood"
-              >
-                <option value="">Select Mood</option>
-                {["Happy", "Anxious", "Focused", "Bored", "Excited"].map(
-                  (moodOption) => (
-                    <option key={moodOption} value={moodOption}>
-                      {moodOption}
-                    </option>
-                  )
-                )}
-              </select>
-            </>
-          ) : moodAfter ? (
-            moodAfter
+        {/* Task actual duration */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>
+          {edit ? (
+            <input
+              style={{
+                backgroundColor: "#4A8BDF",
+                textAlign: "center",
+                padding: "0.3rem",
+                width: "100%",
+                fontSize: "0.8rem",
+                color: "#D7CEC7",
+              }}
+              type="text"
+              value={newActualDuration}
+              onChange={(e) => setActualDuration(e.target.value)}
+            />
           ) : (
-            "N/A"
+            newActualDuration
           )}
         </td>
-        <td>
-          {editMode ? (
-            <>
-              {/* Input for actual duration */}
-              <input
-                style={{
-                  backgroundColor: "#4A8BDF",
-                }}
-                type="number"
-                className="w-16"
-                value={actualDuration}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setActualDuration(e.target.value)
-                }
-              />
-            </>
-          ) : (
-            actualDuration
-          )}
-        </td>
-        <td>
-          {/* Button for updating task */}
+        {/* Task status button */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>
           <button
             onClick={() => {
-              if (editMode) {
-                // if edit mode is true
-                // update task with new mood after, actual duration, actual workload, and completion status
-                updateTask({
-                  id,
-                  moodAfter: newMoodAfter,
-                  actualDuration,
-                  actualWorkload: newWorkload,
-                  isCompleted: !isCompleted,
-                });
+              if (edit) {
+                handleUpdateTask();
               } else if (isCompleted) {
-                // if task is completed
-                // update task with completion status
                 updateTask({
                   id,
                   isCompleted: !isCompleted,
                 });
               } else {
-                // if not in edit mode and task is not completed
-                // set edit mode to true
-                setEditMode(true);
+                setEdit(true);
               }
             }}
             style={{
               backgroundColor: isCompleted
                 ? theme.colorGreenDark
                 : theme.colorDanger,
+              fontSize: "0.8rem",
+              padding: "0.3rem 0.6rem",
             }}
           >
-            {/* Button text based on edit mode and completion status */}
-            {editMode ? "Save" : isCompleted ? "Completed" : "Not Completed"}
+            {edit ? "Save" : isCompleted ? "Completed" : "Not Completed"}
           </button>
         </td>
-        <td>
-          {/* Edit button */}
-          <button className="edit">{edit}</button>
-          {/* Delete button */}
-          <button
-            className="delete"
-            onClick={() => deleteTask(id)}
-          >
+        {/* Task actions buttons */}
+        <td style={{ textAlign: "center", fontSize: "0.8rem", color: "#D7CEC7" }}>
+          <button className="edit" onClick={() => setEdit(!edit)}>
+            {edit ? "Cancel" : edit}
+          </button>
+          <button className="delete" onClick={() => deleteTask(id)}>
             {trash}
           </button>
         </td>
@@ -223,56 +273,37 @@ function TaskItem({
       {/* Share task section */}
       {share && (
         <div>
-          <p
-            style={{
-              color: theme.colorGrey2,
-              padding: "0.8rem",
-            }}
-          >
+          <p style={{ color: theme.colorGrey2, padding: "0.8rem" }}>
             Share Task
           </p>
-
-          {/* Inputs for sharing task */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.8rem",
-            }}
-          >
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
             <input
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setUserId(e.target.value)
-              }
+              onChange={(e) => setUserId(e.target.value)}
               style={{
                 padding: "0.8rem",
                 border: `1px solid ${theme.borderColor1}`,
                 borderRadius: "0.8rem",
                 marginBottom: "0.8rem",
-                color: "white",
-                backgroundColor: "#E4E4E4",
+                color: "#D7CEC7",
+                backgroundColor: "#E4E4e4",
               }}
               type="text"
               placeholder="Enter UserId"
             />
             <input
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setMessage(e.target.value)
-              }
+              onChange={(e) => setMessage(e.target.value)}
               style={{
                 padding: "0.8rem",
                 border: `1px solid ${theme.borderColor1}`,
                 borderRadius: "0.8rem",
                 marginBottom: "0.8rem",
-                color: "white",
-                backgroundColor: "#E4E4E4",
+                color: "#D7CEC7",
+                backgroundColor: "#E4E4e4",
               }}
               type="text"
               placeholder="Message"
             />
           </div>
-
-          {/* Button for sharing task */}
           <button
             style={{
               backgroundColor: "#8e8d8a",
@@ -293,34 +324,35 @@ function TaskItem({
   );
 }
 
-// styled component for TaskItemRow
+// Styled component for TaskItemRow
 const TaskItemRow = styled.tr`
-  background-color: ${(props) => props.theme.borderColor2}; // background color of the row
-  border-bottom: 1px solid ${(props) => props.theme.borderColor1}; // border bottom of the row
+  background-color: ${(props) => props.theme.borderColor2};
+  border-bottom: 1px solid ${(props) => props.theme.borderColor1};
 
   td {
-    padding: 0.8rem; // padding of table cell
-    border: none; // removing border of table cell
+    padding: 0.3rem;
+    border: none;
+    font-size: 0.8rem;
 
     &:not(:last-child) {
-      border-right: 1px solid ${(props) => props.theme.borderColor1}; // border right for all table cells except last one
+      border-right: 1px solid ${(props) => props.theme.borderColor1};
     }
   }
 
   button {
-    padding: 0.4rem 0.8rem; // padding of button
-    border-radius: 20px; // border radius of button
-    border: none; // removing border of button
-    cursor: pointer; // setting cursor to pointer for button
-    color: white; // text color of button
-    font-size: 0.9rem; // font size of button
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 0.8rem;
   }
 
   .edit,
   .delete {
-    background: none; // setting background to none for edit and delete buttons
-    color: ${(props) => props.theme.colorGrey2}; // text color of edit and delete buttons
+    background: none;
+    color: ${(props) => props.theme.colorGrey2};
   }
 `;
 
-export default TaskItem; // exporting TaskItem component
+export default TaskItem;
