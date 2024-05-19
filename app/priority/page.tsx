@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import { useGlobalState } from "../context/globalProvider";
-import TaskItem from "../Components/TaskItem/taskItem";
-
+import TaskItem from "../Components/TaskItem/TaskItem";
 // define the page component
 function page() {
   const { importantTasks } = useGlobalState(); // get important tasks from global state
