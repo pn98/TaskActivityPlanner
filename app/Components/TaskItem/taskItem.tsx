@@ -67,7 +67,7 @@ function TaskItem({
     };
 
     try {
-      const res = await axios.post("/api/tasks", task); // sending POST request to share task
+      const res = await axios.post("/api/share-task", { task, userId }); // sending POST request to share task
 
       if (res.data.error) {
         toast.error(res.data.error); // displaying error message
@@ -109,7 +109,7 @@ function TaskItem({
           {edit ? (
             <StyledSelect value={newWorkload} onChange={(e) => setWorkload(e.target.value)}>
               <option value="">Select Workload</option>
-              {["Low", "Medium", "High"].map((workload) => (
+              {["Light", "Moderate", "Heavy"].map((workload) => (
                 <option key={workload} value={workload}>
                   {workload}
                 </option>

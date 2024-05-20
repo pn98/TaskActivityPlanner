@@ -37,7 +37,7 @@ export default function CalendarView() {
 
   // Function to filter tasks based on the day
   const getTasksForDay = (day: Date) => {
-    const tasksForDay = tasks.filter((task: { date: string | number | Date }) => {
+    const tasksForDay = tasks.filter((task: { date: string | number | Date; }) => {
       const taskDate = new Date(task.date);
       return (
         taskDate.getDate() === day.getDate() &&
@@ -47,7 +47,8 @@ export default function CalendarView() {
     });
 
     // Sorting tasks based on start time
-    const sorted = tasksForDay.sort((a: { startTime: string }, b: { startTime: string }) => {
+    const sorted = tasksForDay.sort((a: { startTime: number; }, b: { startTime: number; }) => {
+      if (!a.startTime || !b.startTime) return 0; // Ensure startTime exists before comparing
       return a.startTime < b.startTime ? -1 : 1;
     });
 
@@ -71,14 +72,22 @@ export default function CalendarView() {
         </div>
         {/* Task containers for the day */}
         <div className="day-column" style={{ flex: 1, position: "relative", paddingTop: "36px" }}>
-          {getTasksForDay(day).map((task: {
-            startTime: string; completionTime: string; id: string; title: string;
-          }) => {
+          {getTasksForDay(day).map((task: any) => {
+            if (!task.startTime || !task.completionTime) {
+              // Skip tasks with invalid startTime or completionTime
+              return null;
+            }
+
+            // Ensure startTime is valid before splitting
+            const startTimeParts = task.startTime.split(":");
+            if (startTimeParts.length !== 2) {
+              return null;
+            }
+
             // Calculating task box dimensions and position
-            const durationInMinutes = parseInt(task.completionTime as string);
+            const durationInMinutes = parseInt(task.completionTime);
             const durationPercentage = (durationInMinutes / 1440) * 100; // Height in percentage based on 1440 minutes in a day
-            const startTimeHours = parseInt(task.startTime.split(":")[0]);
-            const startTimeMinutes = parseInt(task.startTime.split(":")[1]);
+            const [startTimeHours, startTimeMinutes] = startTimeParts.map(Number);
             const startTimePercentage = ((startTimeHours * 60 + startTimeMinutes) / 1440) * 100; // Start time in percentage
 
             const minHeight = 20;

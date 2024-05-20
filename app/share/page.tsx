@@ -1,30 +1,22 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useGlobalState } from "../context/globalProvider";
 import TaskItem from "../Components/TaskItem/TaskItem";
 import { getPayment, createPayment } from "../actions/payment";
-import { useEffect } from "react";
 import Payment from "../Components/payment";
 
-// Define the Page component
 function Page() {
-  // Access necessary global state
   const { incompleteTasks, tasks } = useGlobalState();
-  // Initialize payment state
-  const [payment, setPayment] = React.useState<any>(null);
+  const [payment, setPayment] = useState<any>(null);
 
-  // Effect to check for incomplete tasks and scroll to them
   useEffect(() => {
-    const incompleteTaskExists = tasks.some(
-      (task: { isCompleted: any }) => !task.isCompleted
-    );
+    const incompleteTaskExists = tasks.some((task: { isCompleted: any }) => !task.isCompleted);
 
     if (incompleteTaskExists) {
       window.location.href = "#incomplete-tasks";
     }
   }, [tasks]);
 
-  // Effect to fetch payment information on component mount
   useEffect(() => {
     const fetchPayment = async () => {
       const { payment, error } = await getPayment();
@@ -40,7 +32,6 @@ function Page() {
     fetchPayment();
   }, []);
 
-  // Function to handle payment creation
   const handlePayment = async () => {
     const { payment, error } = await createPayment();
 
@@ -52,12 +43,10 @@ function Page() {
     }
   };
 
-  // Render Payment component if payment information is not available
   if (!payment) {
     return <Payment onPaymentSuccess={handlePayment} />;
   }
 
-  // Render the page content
   return (
     <div
       style={{
@@ -66,98 +55,56 @@ function Page() {
         gap: "1rem",
       }}
     >
-      <table>
+      <table style={{ width: "100%", tableLayout: "fixed", borderCollapse: "collapse" }}>
         <thead>
           <tr>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Title
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Description
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Date
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Workload
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Priority
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Duration
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Mood
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Actual Workload
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Mood After
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Actual Duration
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Status
-            </th>
-            <th
-              style={{
-                textAlign: "left",
-              }}
-            >
-              Actions
-            </th>
+            {[
+              "Title",
+              "Description",
+              "Date",
+              "Start Time",
+              "Estimated Duration",
+              "Workload",
+              "Predicted Mood",
+              "Priority",
+              "Actual Workload",
+              "Post Task Mood Perception",
+              "Actual Duration",
+              "Status",
+              "Actions",
+            ].map((heading) => (
+              <th
+                key={heading}
+                style={{
+                  textAlign: "center",
+                  color: "#D7CEC7",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  padding: "0.3rem",
+                  border: "1px solid #D7CEC7",
+                  width: heading === "Description" ? "200px" : "100px",
+                  fontSize: "0.8rem",
+                }}
+              >
+                <div
+                  style={{
+                    maxWidth: "100%",
+                    whiteSpace: "normal",
+                    margin: "0 auto",
+                  }}
+                >
+                  {heading}
+                </div>
+              </th>
+            ))}
           </tr>
         </thead>
-        {incompleteTasks.map((task: any) => (
-          <TaskItem share={true} key={task._id} {...task} />
-        ))}
+        <tbody>
+          {incompleteTasks.map((task: any) => (
+            <TaskItem share={true} key={task._id} {...task} />
+          ))}
+        </tbody>
       </table>
     </div>
   );

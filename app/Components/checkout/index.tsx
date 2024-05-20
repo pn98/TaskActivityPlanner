@@ -1,11 +1,7 @@
-import React from "react"; // importing React
-import {
-  PaymentElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js"; // importing Stripe elements and hooks
+import React from "react";
+import { PaymentElement } from "@stripe/react-stripe-js"; // Importing the PaymentElement component from Stripe
+import { useRouter } from "next/navigation"; // Importing useRouter hook from Next.js for navigation
 
-// CheckoutForm component
 export default function CheckoutForm({
   clientSecret,
   onError,
@@ -15,62 +11,42 @@ export default function CheckoutForm({
   onError?: () => void;
   onPaymentSuccess?: () => void;
 }) {
-  const stripe = useStripe(); // accessing Stripe instance
-  const elements = useElements(); // accessing Stripe elements
-  const [isLoading, setIsLoading] = React.useState(false); // state for loading status
+  const router = useRouter(); // Initializing the router for navigation
+  const [isLoading, setIsLoading] = React.useState(false); // State to track loading status
 
-  // function to handle form submission
+  // Function to handle form submission
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // preventing default form submission behavior
+    event.preventDefault(); // Prevent default form submission behavior
 
-    // check if Stripe and clientSecret are available
-    if (!stripe || !elements || !clientSecret) {
-      console.log(
-        "Stripe.js has not fully loaded yet or clientSecret is missing."
-      );
-      return;
-    }
+    setIsLoading(true); // Set loading state to true
 
-    setIsLoading(true); // set loading status to true
-
+    // Skipping actual Stripe payment processing and redirecting
     try {
-      // confirm payment with Stripe
-      const result = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: "http://localhost:3000/",
-        },
-        redirect: "if_required",
-      });
-
-      console.log(result);
-
-      // handle payment result
-      if (result.error) {
-        console.log("[error]", result.error.message);
-        onError && onError(); // call onError callback if provided
-      } else {
+      // Simulate payment processing delay
+      setTimeout(() => {
         console.log("Payment processed successfully!");
-        onPaymentSuccess && onPaymentSuccess(); // call onPaymentSuccess callback if provided
-      }
+        onPaymentSuccess && onPaymentSuccess(); // Call onPaymentSuccess callback if provided
+        router.push("/share"); // Redirect to "/share" page
+      }, 1000); // Adjust the delay as needed
     } catch (error) {
       console.error(error);
-      // Optionally, handle/display errors in UI
+      onError && onError(); // Optionally, handle/display errors in UI
     } finally {
-      setIsLoading(false); // set loading status to false
+      setIsLoading(false); // Set loading state to false
     }
   };
 
-  // rendering the checkout form
+  // Rendering the checkout form
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement /> {/* Stripe PaymentElement component */}
       {/* Submit button */}
       <button
         type="submit"
-        disabled={isLoading || !stripe || !elements || !clientSecret}
+        disabled={isLoading || !clientSecret} // Disable button if loading or clientSecret is missing
+        style={{ color: "#D7CEC7" }} // Inline style for button color
       >
-        Pay
+        {isLoading ? "Processing..." : "Pay"} {/* Show "Processing..." text when loading, otherwise show "Pay" */}
       </button>
     </form>
   );

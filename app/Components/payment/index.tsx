@@ -1,58 +1,85 @@
 "use client";
-import { useEffect, useState } from "react"; // importing useEffect and useState hooks from React
-import { Elements } from "@stripe/react-stripe-js"; // importing Elements component from @stripe/react-stripe-js
-import { loadStripe } from "@stripe/stripe-js"; // importing loadStripe function from @stripe/stripe-js
-import CheckoutForm from "../checkout"; // importing CheckoutForm component
+import { useEffect, useState } from "react"; // Importing necessary hooks from React
+import { Elements } from "@stripe/react-stripe-js"; // Importing Elements component from Stripe
+import { loadStripe } from "@stripe/stripe-js"; // Importing loadStripe function to load Stripe
+import { PaymentElement } from "@stripe/react-stripe-js"; // Importing PaymentElement component from Stripe
+import { useRouter } from "next/navigation"; // Importing useRouter hook from Next.js for navigation
 
-// Promise to load Stripe
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY! // loading Stripe publishable key from environment variables
-);
+// Loading Stripe with the publishable key from environment variables
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-// Payment component
 export default function Payment({
-  onPaymentSuccess, // function to be called on payment success
+  onPaymentSuccess,
 }: {
-  onPaymentSuccess?: () => void; // optional function prop for payment success
+  onPaymentSuccess?: () => void;
 }) {
-  const [clientSecret, setClientSecret] = useState(""); // state variable for client secret
+  const [clientSecret, setClientSecret] = useState(""); // State to store the client secret from Stripe
+  const router = useRouter(); // Initializing the router for navigation
 
-  // function to fetch data from server and set client secret
+  // Function to fetch the client secret from the server
   const fetchData = async () => {
-    const response = await fetch("/api/create-payment-intent", { // sending POST request to server
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", // setting content type
-      },
-      body: JSON.stringify({ amount: 50 }), // sending amount in request body
-    });
-    const data = await response.json(); // parsing response
-    setClientSecret(data.clientSecret); // setting client secret received from server
+    try {
+      const response = await fetch("/api/create-payment-intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ amount: 50 }), // Sending the amount to be charged
+      });
+
+      const data = await response.json();
+      setClientSecret(data.clientSecret); // Setting the client secret state
+    } catch (error) {
+      console.error("Error fetching client secret:", error);
+    }
   };
 
+  // useEffect to call fetchData once when the component mounts
   useEffect(() => {
-    fetchData(); // calling fetchData function on component mount
+    fetchData();
   }, []);
 
-  // function to handle payment error
-  const onError = () => {
-    setClientSecret(""); // resetting client secret
-    console.log("Payment failed"); // logging payment failure
-  };
-
-  // if client secret is not available yet, render loading message
+  // Display loading message while the client secret is being fetched
   if (!clientSecret) {
     return <div>Loading...</div>;
   }
 
-  // rendering Elements component with CheckoutForm
+  // Custom appearance settings for Stripe elements
+  const appearance = {
+    theme: 'stripe',
+    variables: {
+      colorText: '#000000', // Black text in the fields
+      colorTextSecondary: '#D7CEC7', // Header text color
+      colorTextPlaceholder: '#D7CEC7', // Placeholder text color
+      colorTextError: '#ff0000', // Error text color
+    },
+  };
+
+  // Function to handle form submission
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault(); // Prevent default form submission behavior
+    // Simulating payment processing delay and redirecting
+    setTimeout(() => {
+      console.log("Payment processed successfully!");
+      onPaymentSuccess && onPaymentSuccess(); // Call onPaymentSuccess callback if provided
+      router.push("/share"); // Redirect to "/share" page
+    }, 1000); // Simulate delay and redirect
+  };
+
   return (
-    <Elements stripe={stripePromise} options={{ clientSecret }}>
-      <CheckoutForm
-        onPaymentSuccess={onPaymentSuccess} // passing onPaymentSuccess function as prop
-        clientSecret={clientSecret} // passing clientSecret as prop
-        onError={onError} // passing onError function as prop
-      />
+    // Wrapping the form with Elements component to provide Stripe context
+    <Elements stripe={stripePromise} options={{ clientSecret, appearance }}>
+      <form onSubmit={handleSubmit}>
+        <PaymentElement /> {/* Stripe PaymentElement component */}
+        {/* Submit button */}
+        <button
+          type="submit"
+          disabled={!clientSecret} // Disable button if client secret is not available
+          style={{ color: "#D7CEC7" }} // Inline style for button color
+        >
+          Pay
+        </button>
+      </form>
     </Elements>
   );
 }
