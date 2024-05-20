@@ -6,7 +6,7 @@ import Image from "next/image"; // importing Image component from next/image
 import menu from "@/app/utils/menu"; // importing menu data
 import Link from "next/link"; // importing Link component from next/link
 import { usePathname, useRouter } from "next/navigation"; // importing usePathname and useRouter hooks from next/navigation
-import Button from "../Button/Button"; // importing Button component
+import Button from "../Button/button"; // importing Button component
 import { arrowLeft, bars, logout } from "@/app/utils/Icons"; // importing icons
 import { UserButton, useClerk, useUser } from "@clerk/nextjs"; // importing UserButton, useClerk, and useUser hooks from @clerk/nextjs
 

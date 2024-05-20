@@ -22,3 +22,8 @@ body {
     color: #D7CEC7;
   }
   
+.react-tooltip {
+  z-index: 1000 !important;
+  word-wrap: break-word;
+  white-space: pre-line;
+}

@@ -13,7 +13,7 @@ function Page() {
 
   // Effect hook to sort tasks based on priority
   useEffect(() => {
-    const sortedTasks = tasks.sort((a: { priority: string; }, b: { priority: string; }) => {
+    const sortedTasks = tasks.sort((a: { priority: string }, b: { priority: string }) => {
       if (a.priority === "High" && b.priority !== "High") return -1;
       if (a.priority === "Medium" && b.priority === "Low") return -1;
       return 1;
@@ -43,7 +43,7 @@ function Page() {
                 "Description",
                 "Date",
                 "Start Time",
-                "Duration (Minutes)",
+                "Estimated Duration",
                 "Workload",
                 "Predicted Mood",
                 "Priority",

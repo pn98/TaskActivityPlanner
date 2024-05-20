@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       priority,
       mood,
       workload,
-      timeToComplete,
+      completionTime,
       share,
       message,
       moodAfter,
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         description,
         date,
         isCompleted: completed,
-        completionTime: timeToComplete,
+        completionTime,
         priority,
         mood,
         workload,
@@ -104,15 +104,6 @@ export async function PUT(req: Request) {
       actualDuration,
     } = await req.json();
 
-    console.log(
-      "PUT request",
-      isCompleted,
-      id,
-      moodAfter,
-      actualWorkload,
-      actualDuration
-    );
-
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized", status: 401 }); // return unauthorized response if user ID is missing
     }
@@ -127,6 +118,7 @@ export async function PUT(req: Request) {
         moodAfter,
         actualDuration,
         actualWorkload,
+        completionTime,
       },
     });
 
@@ -136,4 +128,3 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: "Error deleting task", status: 500 }); // returning error response
   }
 }
-

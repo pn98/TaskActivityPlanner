@@ -24,7 +24,7 @@ function CompletedPage() {
                 "Description",
                 "Date",
                 "Start Time",
-                "Duration (Minutes)",
+                "Estimated Duration",
                 "Workload",
                 "Predicted Mood",
                 "Priority",

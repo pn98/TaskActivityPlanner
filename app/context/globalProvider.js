@@ -24,28 +24,20 @@ export const GlobalProvider = ({ children }) => {
   const theme = themes[selectedTheme]; // Selected theme
 
   // Open modal function
-  const openModal = () => {
-    setModal(true);
-  };
+  const openModal = () => setModal(true);
 
   // Close modal function
-  const closeModal = () => {
-    setModal(false);
-  };
+  const closeModal = () => setModal(false);
 
   // Collapse menu function
-  const collapseMenu = () => {
-    setCollapsed(!collapsed);
-  };
+  const collapseMenu = () => setCollapsed(!collapsed);
 
   // Function to fetch all tasks
   const allTasks = async () => {
     setIsLoading(true);
     try {
       const res = await axios.get("/api/tasks");
-      const sorted = res.data.sort((a, b) => {
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      });
+      const sorted = res.data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       setTasks(sorted);
     } catch (error) {
       console.log(error);
