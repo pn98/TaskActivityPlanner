@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Task {
+  id             String     @id @default(cuid()) @map("_id")
+  title          String
+  description    String
+  date           String
+  isCompleted    Boolean
+  priority       String?
+  mood           String?
+  moodAfter      String?
+  workload       String?
+  actualWorkload String?
+  startTime      String?
+  actualDuration String?
+  completionTime String?
+  userId         String
+  share          Boolean?
+  message        String?
+}
+
+model Payment {
+  id             String     @id @default(cuid()) @map("_id")
+  userId         String
+  paymentDone    Boolean
+}
