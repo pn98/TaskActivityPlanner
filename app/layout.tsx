@@ -3,7 +3,11 @@ import { Nunito } from "next/font/google";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 
 import "./globals.css";
+<<<<<<< HEAD
 import Sidebar from "./Components/SideBar/SideBar";
+=======
+import Sidebar from "./Components/Sidebar/SideBar";
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
 import GlobalStyleProvider from "./providers/GlobalStyleProvider";
 import ContextProvider from "./providers/ContextProvider";
 import NextTopLoader from "nextjs-toploader";

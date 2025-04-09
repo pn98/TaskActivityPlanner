@@ -1,5 +1,9 @@
 "use client";
+<<<<<<< HEAD
 import Tasks from "./Components/Tasks/tasks";
+=======
+import Tasks from "./Components/Tasks/Tasks";
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
 import { useGlobalState } from "./context/globalProvider";
 import { useEffect, useState } from "react";
 

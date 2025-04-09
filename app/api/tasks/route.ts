@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 import prisma from "@/app/Utils/connect";// importing Prisma client
 import { auth } from "@clerk/nextjs"; // importing authentication middleware
 import { NextResponse } from "next/server"; // importing Next.js server response utility
 
 
+=======
+import prisma from "@/app/utils/connect"; // importing Prisma client
+import { auth } from "@clerk/nextjs"; // importing authentication middleware
+import { NextResponse } from "next/server"; // importing Next.js server response utility
+
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
 // POST request handler function
 export async function POST(req: Request) {
   try {

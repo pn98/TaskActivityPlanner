@@ -6,16 +6,27 @@ import { useGlobalState } from "../context/globalProvider";
 import "react-calendar-heatmap/dist/styles.css";
 import "./index.css";
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
 // defining page component
 export default function Page() {
   const { tasks } = useGlobalState(); //tasks state being accessed from globalContext
 
+<<<<<<< HEAD
 useEffect(() => {
     const cells = document.querySelectorAll(".react-calendar-heatmap .day");
 
     cells.forEach(cell => {
     cell.addEventListener("mouseenter", (e) => {
+=======
+  useEffect(() => {
+    const cells = document.querySelectorAll(".react-calendar-heatmap .day");
+
+    cells.forEach(cell => {
+      cell.addEventListener("mouseenter", (e) => {
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
         if (!(e.target instanceof HTMLElement)) return;
         const tooltip = document.createElement("div");
         tooltip.className = "heatmap-tooltip";
@@ -23,8 +34,13 @@ useEffect(() => {
         document.body.appendChild(tooltip);
 
         const moveTooltip = (e: MouseEvent) => {
+<<<<<<< HEAD
         tooltip.style.left = `${e.pageX + 10}px`;
         tooltip.style.top = `${e.pageY + 10}px`;
+=======
+          tooltip.style.left = `${e.pageX + 10}px`;
+          tooltip.style.top = `${e.pageY + 10}px`;
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
         };
 
         document.addEventListener("mousemove", moveTooltip);
@@ -95,6 +111,41 @@ useEffect(() => {
   // converting to array for the heatmap
   const heatmapValues = allDates(taskCountsByDate); // converting task counts to heatmap values
 
+<<<<<<< HEAD
+=======
+  const priorityHeatmapValues = allDates(Object.keys(priorityCountsByDate).reduce((acc: any, date) => { // converting priority counts to heatmap values
+    const { high, medium, low } = priorityCountsByDate[date]; // destructuring priority counts
+    const score = high * 2 + medium; // calculating priority score
+    acc[date] = score; // setting priority score for date
+    return acc; // returns the updated accumulator
+  }, {}));
+
+  const moodHeatmapValues = allDates(Object.keys(moodScoresByDate).reduce((acc: any, date) => { // converting mood scores to heatmap values
+    const scores = moodScoresByDate[date]; // getting mood scores for the date
+    const average = scores.reduce((a: any, b: any) => a + b, 0) / scores.length; // calculating average mood score
+    acc[date] = average; // setting average mood score for date
+    return acc; // returns the updated accumulator
+  }, {}));
+
+  const classForPriorityValue = (value: any) => { // function to determine CSS class based on priority value
+    if (!value) return "color-empty"; // return empty color if value doesn't exist
+    const count = value.count; // get count from value
+    if (count >= 3) return "color-red"; // return red color for count >= 3
+    if (count === 2) return "color-orange"; // return orange color for count === 2
+    if (count === 1) return "color-yellow"; // return yellow color for count === 1
+    return "color-green"; // return green color for count === 0
+  };
+
+  const classForMoodValue = (value: any) => { // function to determine CSS class based on mood value
+    if (!value) return "color-green"; // Default to green
+    const average = value.count; // get average mood score from value
+    if (average > 2.5) return "color-green"; // return green color for average mood score > 2.5
+    if (average > 1.5) return "color-orange"; // return orange color for average mood score > 1.5
+    if (average > 0.5) return "color-yellow"; // return yellow color for average mood score > 0.5
+    return "color-green"; // return green color for average mood score <= 0.5
+  };
+
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
   const tooltipDataAttrs = (value: any) => { // function to set tooltip data attributes
     return {
       'data-date': value ? value.date : '', // set data-date attribute to date or empty string
@@ -137,6 +188,40 @@ useEffect(() => {
           return value ? value.date : ''; // displaying date
         }}
       />
+<<<<<<< HEAD
     </div>
   );
 } 
+=======
+
+      <h1 className="section-header">Priority Heatmap</h1>
+      <CalendarHeatmap // CalendarHeatmap component for priority heatmap
+        startDate={new Date("2024-01-01")}
+        endDate={new Date("2024-12-31")}
+        values={priorityHeatmapValues} // setting values for heatmap
+        showWeekdayLabels={true} // show weekday labels
+        weekdayLabels={["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]} // setting weekday labels
+        classForValue={classForPriorityValue} // using function to determine CSS class for each value
+        tooltipDataAttrs={tooltipDataAttrs} // setting tooltip data attributes
+        titleForValue={(value) => { // function to display title for each value
+          return value ? value.date : ''; // displaying date
+        }}
+      />
+
+      <h1 className="section-header">Mood Heatmap</h1>
+      <CalendarHeatmap // CalendarHeatmap component for mood heatmap
+        startDate={new Date("2024-01-01")}
+        endDate={new Date("2024-12-31")}
+        values={moodHeatmapValues} // setting values for heatmap
+        showWeekdayLabels={true} // show weekday labels
+        weekdayLabels={["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]} // setting weekday labels
+        classForValue={classForMoodValue} // using function to determine CSS class for each value
+        tooltipDataAttrs={tooltipDataAttrs} // setting tooltip data attributes
+        titleForValue={(value) => { // function to display title for each value
+          return value ? value.date : ''; // displaying date
+        }}
+      />
+    </div>
+  );
+}
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0

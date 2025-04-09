@@ -2,7 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useGlobalState } from "../context/globalProvider";
+<<<<<<< HEAD
 import TaskItem from "../Components/TaskItem/taskItem";
+=======
+import TaskItem from "../Components/TaskItem/TaskItem";
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
 
 // Page component definition
 function Page() {

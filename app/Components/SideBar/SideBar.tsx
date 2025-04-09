@@ -7,12 +7,21 @@ import menu from "@/app/utils/menu"; // importing menu data
 import Link from "next/link"; // importing Link component from next/link
 import { usePathname, useRouter } from "next/navigation"; // importing usePathname and useRouter hooks from next/navigation
 import Button from "../Button/button"; // importing Button component
+<<<<<<< HEAD
 import { logout } from "@/app/utils/Icons"; // importing icons
 import { useClerk, useUser } from "@clerk/nextjs"; // importing UserButton, useClerk, and useUser hooks from @clerk/nextjs
 
 // Sidebar component
 function Sidebar() {
   const { theme } = useGlobalState(); // accessing theme, collapsed state, and collapseMenu function from global state
+=======
+import { arrowLeft, bars, logout } from "@/app/utils/Icons"; // importing icons
+import { UserButton, useClerk, useUser } from "@clerk/nextjs"; // importing UserButton, useClerk, and useUser hooks from @clerk/nextjs
+
+// Sidebar component
+function Sidebar() {
+  const { theme, collapsed, collapseMenu } = useGlobalState(); // accessing theme, collapsed state, and collapseMenu function from global state
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
   const { signOut } = useClerk(); // accessing signOut function from Clerk authentication
 
   const { user } = useUser(); // accessing user data from Clerk authentication
@@ -117,7 +126,10 @@ const Profile = styled.div`
     display: flex;
     flex-direction: column;
     line-height: 1.4rem;
+<<<<<<< HEAD
     padding-left: 20px;
+=======
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
   }
 
   // styling for profile image and name

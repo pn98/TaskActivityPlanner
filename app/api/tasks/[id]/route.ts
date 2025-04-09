@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server"; // importing Next.js server response utility
+<<<<<<< HEAD
 import prisma from "@/app/Utils/connect"; // importing Prisma client
+=======
+import prisma from "@/app/utils/connect"; // importing Prisma client
+>>>>>>> 530f2b85c322b2862d872c773c43eb1292b693c0
 import { auth } from "@clerk/nextjs"; // importing authentication middleware
 
 // DELETE request handler function
